@@ -3,10 +3,15 @@ from __future__ import annotations
 import torch
 import numpy as np
 from typing import Dict, Tuple, Optional
-from transformers import AutoModel, AutoProcessor, AutoFeatureExtractor
-import torchaudio
+from transformers import AutoModel, AutoProcessor, AutoFeatureExtractor    
 from tqdm import tqdm
 
+def import_torchaudio_gracefully():
+    try:
+        import torchaudio
+        return torchaudio
+    except ImportError:
+        raise ImportError('torchaudio is required for SpeechFeatureExtractor. Please install it with this command:\npip install torchaudio')
 
 def auto_device(fn):
     def wrapper(self, *args, **kwargs):
@@ -40,6 +45,7 @@ class SpeechFeatureExtractor:
         target_sample_rate: int = 16000,
         disable_tqdm: bool = False,
     ):
+        import_torchaudio_gracefully()
         assert pool in {"last", "mean"}, "pool must be 'last' or 'mean'"
         self.model_name = model_name
         self.chunk_size = float(chunk_size)
