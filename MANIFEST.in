@@ -1,0 +1,6 @@
+include README.md
+include requirements.txt
+include LICENSE
+recursive-include encoding *.py
+recursive-include encoding *.txt
+recursive-include encoding *.md
