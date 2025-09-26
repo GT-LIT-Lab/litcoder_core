@@ -88,7 +88,7 @@ print({
 Or run the ready-made script:
 
 ```bash
-python train_lebel_wordrate_from_pkg.py
+python train_simple.py
 ```
 
 To download the assembly, use the following google drive link: [assembly_lebel_uts03.pkl](https://drive.google.com/file/d/1q-XLPjvhd8doGFhYBmeOkcenS9Y59x64/view?usp=sharing)
