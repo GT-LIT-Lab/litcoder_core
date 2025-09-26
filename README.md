@@ -13,8 +13,11 @@ This repository accompanies the paper "LITcoder: A General-Purpose Library for B
 
 Environment setup:
 ```bash
-conda create -n <env_name> -y python=3.12.8
-conda activate <env_name>
+git clone git@github.com:GT-LIT-Lab/litcoder_core.git
+cd litcoder_core
+conda create -n litcoder -y python=3.12.8
+conda activate litcoder
+conda install pip
 pip install -e .
 ```
 
@@ -28,6 +31,14 @@ pip install -e .
 This shows how easy it is to train a model using LITcoder. The assembly, was created using the `AssemblyGenerator` class, which is part of the `encoding.assembly.assembly_generator` module.
 Use the packaged LeBel assembly and train a wordrate-only model end-to-end. This assembly will help you get started with the library and understand the core components, and to better understand the tutorials.
 
+First, download the Lebel pre-packaged assembly
+
+```bash
+gdown 1q-XLPjvhd8doGFhYBmeOkcenS9Y59x64
+```
+
+Then run the following:
+
 ```python
 from encoding.assembly.assembly_loader import load_assembly
 from encoding.features.factory import FeatureExtractorFactory
@@ -36,8 +47,7 @@ from encoding.models.nested_cv import NestedCVModel
 from encoding.trainer import AbstractTrainer
 
 # 1) Load prepackaged assembly
-assembly_path = \
-    "<path_to_assembly.pkl>"
+assembly_path = "assembly_lebel_uts03.pkl"
 assembly = load_assembly(assembly_path)
 
 # 2) Configure components (wordrate-only)
