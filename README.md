@@ -24,9 +24,9 @@ pip install -e .
 ---
 
 
-## 2) Quick setup from a prepackaged assembly (LeBel, wordrate)
-This shows how easy it is to train a model using LITcoder. This assembly, was created using the `AssemblyGenerator` class, which is part of the `encoding.assembly.assembly_generator` module.
-Use the packaged LeBel assembly and train a wordrate-only model end-to-end.
+## 2) Quick setup from a prepackaged assembly (LeBel)
+This shows how easy it is to train a model using LITcoder. The assembly, was created using the `AssemblyGenerator` class, which is part of the `encoding.assembly.assembly_generator` module.
+Use the packaged LeBel assembly and train a wordrate-only model end-to-end. This assembly will help you get started with the library and understand the core components, and to better understand the tutorials.
 
 ```python
 from encoding.assembly.assembly_loader import load_assembly
@@ -94,7 +94,6 @@ python train_simple.py
 To download the assembly, use the following google drive link: [assembly_lebel_uts03.pkl](https://drive.google.com/file/d/1q-XLPjvhd8doGFhYBmeOkcenS9Y59x64/view?usp=sharing)
 
 We recommend using this first for testing the installation. More details on how to create your own assembly will be added soon.
-This assembly will help you get started with the library and understand the core components.
 We will also be moving to a more scalable hosting solution for the assemblies in the very near future.
 
 ## 3) Quick tutorial:
