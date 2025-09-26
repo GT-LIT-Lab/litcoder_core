@@ -59,6 +59,9 @@ autodoc_mock_imports = [
     # Neuroimaging and transformer dependencies
     "nibabel",
     "transformer_lens",
+    "nilearn",
+    "tqdm",
+    "gensim",
 ]
 
 # Napoleon settings
