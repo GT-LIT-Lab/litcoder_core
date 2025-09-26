@@ -89,6 +89,19 @@ autodoc_default_options = {
 # Autosummary settings
 autosummary_generate = True
 
+# Skip problematic modules during autosummary generation
+autosummary_imported_members = False
+autosummary_mock_imports = [
+    "encoding.models",
+    "encoding.features",
+    "encoding.assembly",
+    "encoding.plotting",
+    "encoding.brain_projection",
+    "encoding.downsample",
+    "encoding.utils",
+    "encoding.trainer",
+]
+
 # HTML output options
 try:
     import sphinx_rtd_theme  # noqa: F401
