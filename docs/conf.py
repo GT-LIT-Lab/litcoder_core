@@ -24,13 +24,41 @@ extensions = [
 # Mock heavy or optional dependencies during autodoc to avoid installing the full stack
 autodoc_mock_imports = [
     # Core scientific stack / plotting
-    "numpy", "pandas", "scipy", "matplotlib", "seaborn", "plotly", "umap", "xarray",
-    "netCDF4", "h5py", "tables", "pyarrow",
+    "numpy",
+    "pandas",
+    "scipy",
+    "matplotlib",
+    "seaborn",
+    "plotly",
+    "umap",
+    "xarray",
+    "netCDF4",
+    "h5py",
+    "tables",
+    "pyarrow",
     # ML / DL frameworks and ecosystems
-    "torch", "torchaudio", "transformers", "accelerate", "tokenizers", "sentencepiece",
-    "huggingface_hub", "datasets", "nltk", "scikit-learn", "statsmodels", "shap", "numba", "llvmlite",
+    "torch",
+    "torchaudio",
+    "transformers",
+    "accelerate",
+    "tokenizers",
+    "sentencepiece",
+    "huggingface_hub",
+    "datasets",
+    "nltk",
+    "scikit-learn",
+    "statsmodels",
+    "shap",
+    "numba",
+    "llvmlite",
     # IO / cloud / tracking
-    "boto3", "botocore", "wandb", "PIL",
+    "boto3",
+    "botocore",
+    "wandb",
+    "PIL",
+    # Neuroimaging and transformer dependencies
+    "nibabel",
+    "transformer_lens",
 ]
 
 # Napoleon settings
