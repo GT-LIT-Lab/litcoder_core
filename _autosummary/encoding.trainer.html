@@ -1,0 +1,248 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>encoding.trainer &mdash; litcoder 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="encoding.utils" href="encoding.utils.html" />
+    <link rel="prev" title="encoding.plotting.plotting_utils" href="encoding.plotting.plotting_utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            litcoder
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assemblies.html">Assemblies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trainer.html">Trainer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../caching.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting.html">Plotting &amp; Logging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="encoding.html">encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.html">encoding.assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.assemblies.html">encoding.assembly.assemblies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.base_processor.html">encoding.assembly.base_processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.narratives_processor.html">encoding.assembly.narratives_processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.lpp_processor.html">encoding.assembly.lpp_processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.lebel_processor.html">encoding.assembly.lebel_processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.assembly_loader.html">encoding.assembly.assembly_loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.assembly_generator.html">encoding.assembly.assembly_generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.html">encoding.features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.factory.html">encoding.features.factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.language_model.html">encoding.features.language_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.embeddings.html">encoding.features.embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.speech_model.html">encoding.features.speech_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.simple_features.html">encoding.features.simple_features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.FIR_expander.html">encoding.features.FIR_expander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.downsample.html">encoding.downsample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.downsample.downsampling.html">encoding.downsample.downsampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.html">encoding.models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.base.html">encoding.models.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.ridge_regression.html">encoding.models.ridge_regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.linear.html">encoding.models.linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.nested_cv.html">encoding.models.nested_cv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.sklearn_model.html">encoding.models.sklearn_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.plotting.html">encoding.plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.plotting.plotting_utils.html">encoding.plotting.plotting_utils</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">encoding.trainer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.trainer.AbstractTrainer"><code class="docutils literal notranslate"><span class="pre">AbstractTrainer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.trainer.AbstractTrainer.__init__"><code class="docutils literal notranslate"><span class="pre">AbstractTrainer.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.trainer.AbstractTrainer.apply_fir_delays"><code class="docutils literal notranslate"><span class="pre">AbstractTrainer.apply_fir_delays()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.trainer.AbstractTrainer.extract_and_downsample_features"><code class="docutils literal notranslate"><span class="pre">AbstractTrainer.extract_and_downsample_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.trainer.AbstractTrainer.log_metrics"><code class="docutils literal notranslate"><span class="pre">AbstractTrainer.log_metrics()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.trainer.AbstractTrainer.save_model"><code class="docutils literal notranslate"><span class="pre">AbstractTrainer.save_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.trainer.AbstractTrainer.setup_logger"><code class="docutils literal notranslate"><span class="pre">AbstractTrainer.setup_logger()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.trainer.AbstractTrainer.structure_data"><code class="docutils literal notranslate"><span class="pre">AbstractTrainer.structure_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.trainer.AbstractTrainer.train"><code class="docutils literal notranslate"><span class="pre">AbstractTrainer.train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.utils.html">encoding.utils</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">litcoder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+      <li class="breadcrumb-item active">encoding.trainer</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/encoding.trainer.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-encoding.trainer">
+<span id="encoding-trainer"></span><h1>encoding.trainer<a class="headerlink" href="#module-encoding.trainer" title="Link to this heading"></a></h1>
+<p>Abstract trainer that accepts components as dependencies.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="encoding.trainer.AbstractTrainer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">encoding.trainer.</span></span><span class="sig-name descname"><span class="pre">AbstractTrainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assembly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_extractors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsampler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fir_delays</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trimming_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_train_test_split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'unknown'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'wandb'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wandb_project_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'abstract-trainer'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'results'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsample_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">story_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.trainer.AbstractTrainer" title="Link to this definition"></a></dt>
+<dd><p>A completely abstract trainer that accepts all components as dependencies.</p>
+<p>This trainer doesn’t know about datasets, assemblies, or specific feature types.
+It just orchestrates the pipeline: extract → downsample → FIR → trim → train.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.trainer.AbstractTrainer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assembly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_extractors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsampler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fir_delays</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trimming_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_train_test_split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'unknown'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'wandb'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wandb_project_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'abstract-trainer'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'results'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsample_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">story_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.trainer.AbstractTrainer.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize with all components as dependencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>assembly</strong> – Data assembly (has .stories, .get_brain_data(), etc.)</p></li>
+<li><p><strong>feature_extractors</strong> – List of feature extraction components</p></li>
+<li><p><strong>downsampler</strong> – Downsampling component</p></li>
+<li><p><strong>model</strong> – Model with fit_predict() method</p></li>
+<li><p><strong>fir_delays</strong> – List of FIR delays to apply</p></li>
+<li><p><strong>trimming_config</strong> – Dict specifying how to trim data</p></li>
+<li><p><strong>use_train_test_split</strong> – Whether to use train/test split vs concatenation</p></li>
+<li><p><strong>layer_idx</strong> – Layer index for feature extraction</p></li>
+<li><p><strong>lookback</strong> – Context lookback for feature extraction</p></li>
+<li><p><strong>dataset_type</strong> – Dataset type for caching</p></li>
+<li><p><strong>logger_backend</strong> – “wandb” or “tensorboard”</p></li>
+<li><p><strong>wandb_project_name</strong> – Project name for wandb</p></li>
+<li><p><strong>results_dir</strong> – Directory for results</p></li>
+<li><p><strong>run_name</strong> – Custom run name</p></li>
+<li><p><strong>downsample_config</strong> – Downsampling parameters</p></li>
+<li><p><strong>story_selection</strong> – Specific stories to process (None = all)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.trainer.AbstractTrainer.apply_fir_delays">
+<span class="sig-name descname"><span class="pre">apply_fir_delays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#encoding.trainer.AbstractTrainer.apply_fir_delays" title="Link to this definition"></a></dt>
+<dd><p>Apply FIR delays to features.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.trainer.AbstractTrainer.extract_and_downsample_features">
+<span class="sig-name descname"><span class="pre">extract_and_downsample_features</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#encoding.trainer.AbstractTrainer.extract_and_downsample_features" title="Link to this definition"></a></dt>
+<dd><p>Extract and downsample features for all stories.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.trainer.AbstractTrainer.log_metrics">
+<span class="sig-name descname"><span class="pre">log_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.trainer.AbstractTrainer.log_metrics" title="Link to this definition"></a></dt>
+<dd><p>Log metrics to configured backend.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.trainer.AbstractTrainer.save_model">
+<span class="sig-name descname"><span class="pre">save_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">best_alphas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.trainer.AbstractTrainer.save_model" title="Link to this definition"></a></dt>
+<dd><p>Save model results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.trainer.AbstractTrainer.setup_logger">
+<span class="sig-name descname"><span class="pre">setup_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.trainer.AbstractTrainer.setup_logger" title="Link to this definition"></a></dt>
+<dd><p>Setup experiment logger.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.trainer.AbstractTrainer.structure_data">
+<span class="sig-name descname"><span class="pre">structure_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#encoding.trainer.AbstractTrainer.structure_data" title="Link to this definition"></a></dt>
+<dd><p>Structure data according to training paradigm.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.trainer.AbstractTrainer.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">model_kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#encoding.trainer.AbstractTrainer.train" title="Link to this definition"></a></dt>
+<dd><p>Run the complete training pipeline.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="encoding.plotting.plotting_utils.html" class="btn btn-neutral float-left" title="encoding.plotting.plotting_utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="encoding.utils.html" class="btn btn-neutral float-right" title="encoding.utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Taha Binhuraib, Ruimin Gao, Anya Ivanova.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

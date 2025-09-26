@@ -1,0 +1,6 @@
+﻿encoding.features.speech\_model
+===============================
+
+.. currentmodule:: encoding.features
+
+.. autodata:: speech_model

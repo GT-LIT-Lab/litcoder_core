@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>encoding.features.language_model &mdash; litcoder 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            litcoder
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../assemblies.html">Assemblies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trainer.html">Trainer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../caching.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plotting.html">Plotting &amp; Logging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_reference.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">litcoder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">encoding.features.language_model</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for encoding.features.language_model</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformer_lens</span><span class="w"> </span><span class="kn">import</span> <span class="n">HookedTransformer</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseFeatureExtractor</span>
+
+
+<div class="viewcode-block" id="LanguageModelFeatureExtractor">
+<a class="viewcode-back" href="../../../_autosummary/encoding.features.html#encoding.features.LanguageModelFeatureExtractor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LanguageModelFeatureExtractor</span><span class="p">(</span><span class="n">BaseFeatureExtractor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Feature extractor that uses HookedTransformer to extract embeddings from text.</span>
+
+<span class="sd">    This extractor supports different language models and can extract features</span>
+<span class="sd">    from either the last token or average across all tokens. It now supports</span>
+<span class="sd">    multi-layer extraction with lazy loading.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="LanguageModelFeatureExtractor.__init__">
+<a class="viewcode-back" href="../../../_autosummary/encoding.features.html#encoding.features.LanguageModelFeatureExtractor.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the language model feature extractor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            config (Dict[str, Any]): Configuration dictionary containing:</span>
+<span class="sd">                - model_name (str): Name of the language model to use</span>
+<span class="sd">                - layer_idx (int): Index of the layer to extract features from (for backward compatibility)</span>
+<span class="sd">                - hook_type (str): Type of hook to use (default: &quot;hook_resid_pre&quot;)</span>
+<span class="sd">                - last_token (bool): Whether to use only the last token&#39;s features</span>
+<span class="sd">                - device (str): Device to run the model on (&#39;cuda&#39; or &#39;cpu&#39;)</span>
+<span class="sd">                - context_type (str): Type of context to use (fullcontext, nocontext, halfcontext)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer_idx</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;layer_idx&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># For backward compatibility</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hook_type</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hook_type&quot;</span><span class="p">,</span> <span class="s2">&quot;hook_resid_pre&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_token</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;last_token&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_type</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;context_type&quot;</span><span class="p">,</span> <span class="s2">&quot;fullcontext&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">mps</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;mps&quot;</span>
+        <span class="k">elif</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
+
+        <span class="c1"># Initialize model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">HookedTransformer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="LanguageModelFeatureExtractor.extract_features">
+<a class="viewcode-back" href="../../../_autosummary/encoding.features.html#encoding.features.LanguageModelFeatureExtractor.extract_features">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_features</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">stimuli</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">layer_idx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract features from the input stimuli using a for loop.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            stimuli (Union[str, List[str]]): Input text or list of texts</span>
+<span class="sd">            layer_idx (Optional[int]): Specific layer to extract from. If None, uses self.layer_idx</span>
+<span class="sd">            **kwargs: Additional arguments for feature extraction</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Extracted features</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">layer_idx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">layer_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_idx</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stimuli</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">stimuli</span> <span class="o">=</span> <span class="p">[</span><span class="n">stimuli</span><span class="p">]</span>
+
+        <span class="c1"># Process each stimulus individually</span>
+        <span class="n">all_features</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">stimuli</span><span class="p">)</span><span class="si">}</span><span class="s2"> texts one at a time...&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stimuli</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing text </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">stimuli</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Extract features for the current text</span>
+            <span class="n">features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_single_features</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">layer_idx</span><span class="p">)</span>
+            <span class="n">all_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+        <span class="c1"># Stack all features</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">all_features</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LanguageModelFeatureExtractor.extract_all_layers">
+<a class="viewcode-back" href="../../../_autosummary/encoding.features.html#encoding.features.LanguageModelFeatureExtractor.extract_all_layers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract_all_layers</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">stimuli</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract features from all layers for the input stimuli.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            stimuli (Union[str, List[str]]): Input text or list of texts</span>
+<span class="sd">            **kwargs: Additional arguments for feature extraction</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[int, np.ndarray]: Dictionary mapping layer indices to features</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stimuli</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">stimuli</span> <span class="o">=</span> <span class="p">[</span><span class="n">stimuli</span><span class="p">]</span>
+
+        <span class="c1"># Process each stimulus individually</span>
+        <span class="n">all_layer_features</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># use the logger: TODO: Taha</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">stimuli</span><span class="p">)</span><span class="si">}</span><span class="s2"> texts for all layers...&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stimuli</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing text </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">stimuli</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Extract all layers for the current text</span>
+            <span class="n">layer_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_single_text_all_layers</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+            <span class="c1"># Accumulate features across texts</span>
+            <span class="k">for</span> <span class="n">layer_idx</span><span class="p">,</span> <span class="n">features</span> <span class="ow">in</span> <span class="n">layer_features</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">layer_idx</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_layer_features</span><span class="p">:</span>
+                    <span class="n">all_layer_features</span><span class="p">[</span><span class="n">layer_idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">all_layer_features</span><span class="p">[</span><span class="n">layer_idx</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+        <span class="c1"># Stack features for each layer</span>
+        <span class="k">for</span> <span class="n">layer_idx</span> <span class="ow">in</span> <span class="n">all_layer_features</span><span class="p">:</span>
+            <span class="n">all_layer_features</span><span class="p">[</span><span class="n">layer_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">all_layer_features</span><span class="p">[</span><span class="n">layer_idx</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">all_layer_features</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_single_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">layer_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract features from a single text for a specific layer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text (str): Input text</span>
+<span class="sd">            layer_idx (int): Layer index to extract from</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Extracted features for the text</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if the text is &#39;&#39; then return np.zeros(dimensions of the features)</span>
+        <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">d_model</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">d_model</span>
+            <span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="c1"># Process a single text</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">run_with_cache</span><span class="p">(</span>
+                <span class="n">text</span><span class="p">,</span> <span class="n">prepend_bos</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="kc">None</span>  <span class="c1"># Return the raw outputs</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Get features from the specified hook and layer</span>
+            <span class="n">hook_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;blocks.</span><span class="si">{</span><span class="n">layer_idx</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hook_type</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">features</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="n">hook_name</span><span class="p">]</span>
+
+            <span class="c1"># Handle last token or average across tokens</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_token</span><span class="p">:</span>
+                <span class="c1"># Get the last token&#39;s features</span>
+                <span class="n">token_features</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Add batch dimension</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Average across all tokens</span>
+                <span class="n">token_features</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="p">)</span>  <span class="c1"># Add batch dimension</span>
+
+            <span class="c1"># Convert to numpy array</span>
+            <span class="k">return</span> <span class="n">token_features</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_single_text_all_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract features from all layers for a single text.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text (str): Input text</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[int, np.ndarray]: Dictionary mapping layer indices to features</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if the text is &#39;&#39; then return zeros for all layers</span>
+        <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">empty_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">d_model</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">d_model</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">empty_features</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">n_layers</span><span class="p">)}</span>
+
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="c1"># Process a single text</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">run_with_cache</span><span class="p">(</span>
+                <span class="n">text</span><span class="p">,</span> <span class="n">prepend_bos</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="kc">None</span>  <span class="c1"># Return the raw outputs</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Extract features from all layers</span>
+            <span class="n">all_layer_features</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">layer_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">n_layers</span><span class="p">):</span>
+                <span class="n">hook_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;blocks.</span><span class="si">{</span><span class="n">layer_idx</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hook_type</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">features</span> <span class="o">=</span> <span class="n">cache</span><span class="p">[</span><span class="n">hook_name</span><span class="p">]</span>
+
+                <span class="c1"># Handle last token or average across tokens</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_token</span><span class="p">:</span>
+                    <span class="c1"># Get the last token&#39;s features</span>
+                    <span class="n">token_features</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Add batch dimension</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Average across all tokens</span>
+                    <span class="n">token_features</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="p">)</span>  <span class="c1"># Add batch dimension</span>
+
+                <span class="c1"># Convert to numpy array and store</span>
+                <span class="n">all_layer_features</span><span class="p">[</span><span class="n">layer_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">token_features</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="n">all_layer_features</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_config</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate the configuration parameters.&quot;&quot;&quot;</span>
+        <span class="n">required_params</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">required_params</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">param</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing required parameter: </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;layer_idx&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;layer_idx&quot;</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;layer_idx must be an integer&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;device&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;device&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span> <span class="s2">&quot;cpu&quot;</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;device must be either &#39;cuda&#39; or &#39;cpu&#39;&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;context_type&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+            <span class="n">valid_context_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fullcontext&quot;</span><span class="p">,</span> <span class="s2">&quot;nocontext&quot;</span><span class="p">,</span> <span class="s2">&quot;halfcontext&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;context_type&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_context_types</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;context_type must be one of </span><span class="si">{</span><span class="n">valid_context_types</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Taha Binhuraib, Ruimin Gao, Anya Ivanova.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

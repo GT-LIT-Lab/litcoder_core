@@ -1,0 +1,6 @@
+﻿encoding.assembly.lpp\_processor
+================================
+
+.. currentmodule:: encoding.assembly
+
+.. autodata:: lpp_processor

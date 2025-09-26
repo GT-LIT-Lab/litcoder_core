@@ -1,0 +1,6 @@
+﻿encoding.assembly
+=================
+
+.. automodule:: encoding.assembly
+
+   

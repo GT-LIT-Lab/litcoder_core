@@ -1,0 +1,6 @@
+﻿encoding.assembly.base\_processor
+=================================
+
+.. currentmodule:: encoding.assembly
+
+.. autodata:: base_processor

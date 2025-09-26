@@ -1,0 +1,6 @@
+﻿encoding.models.ridge\_regression
+=================================
+
+.. currentmodule:: encoding.models
+
+.. autodata:: ridge_regression

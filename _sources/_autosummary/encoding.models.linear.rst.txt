@@ -1,0 +1,6 @@
+﻿encoding.models.linear
+======================
+
+.. currentmodule:: encoding.models
+
+.. autodata:: linear

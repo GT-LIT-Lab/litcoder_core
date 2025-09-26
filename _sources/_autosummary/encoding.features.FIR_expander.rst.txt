@@ -1,0 +1,6 @@
+﻿encoding.features.FIR\_expander
+===============================
+
+.. currentmodule:: encoding.features
+
+.. autodata:: FIR_expander

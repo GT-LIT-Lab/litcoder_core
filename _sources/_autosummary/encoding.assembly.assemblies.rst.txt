@@ -1,0 +1,6 @@
+﻿encoding.assembly.assemblies
+============================
+
+.. currentmodule:: encoding.assembly
+
+.. autodata:: assemblies

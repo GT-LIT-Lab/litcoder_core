@@ -1,0 +1,608 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>encoding.utils &mdash; litcoder 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="encoding.trainer" href="encoding.trainer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            litcoder
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assemblies.html">Assemblies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trainer.html">Trainer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../caching.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting.html">Plotting &amp; Logging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="encoding.html">encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.html">encoding.assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.assemblies.html">encoding.assembly.assemblies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.base_processor.html">encoding.assembly.base_processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.narratives_processor.html">encoding.assembly.narratives_processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.lpp_processor.html">encoding.assembly.lpp_processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.lebel_processor.html">encoding.assembly.lebel_processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.assembly_loader.html">encoding.assembly.assembly_loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.assembly_generator.html">encoding.assembly.assembly_generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.html">encoding.features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.factory.html">encoding.features.factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.language_model.html">encoding.features.language_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.embeddings.html">encoding.features.embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.speech_model.html">encoding.features.speech_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.simple_features.html">encoding.features.simple_features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.FIR_expander.html">encoding.features.FIR_expander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.downsample.html">encoding.downsample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.downsample.downsampling.html">encoding.downsample.downsampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.html">encoding.models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.base.html">encoding.models.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.ridge_regression.html">encoding.models.ridge_regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.linear.html">encoding.models.linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.nested_cv.html">encoding.models.nested_cv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.sklearn_model.html">encoding.models.sklearn_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.plotting.html">encoding.plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.plotting.plotting_utils.html">encoding.plotting.plotting_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.trainer.html">encoding.trainer</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">encoding.utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.ActivationCache"><code class="docutils literal notranslate"><span class="pre">ActivationCache</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.ActivationCache.__init__"><code class="docutils literal notranslate"><span class="pre">ActivationCache.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.ActivationCache.get_cache_path"><code class="docutils literal notranslate"><span class="pre">ActivationCache.get_cache_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.ActivationCache.load_activations"><code class="docutils literal notranslate"><span class="pre">ActivationCache.load_activations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.ActivationCache.load_multi_layer_activations"><code class="docutils literal notranslate"><span class="pre">ActivationCache.load_multi_layer_activations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.ActivationCache.save_activations"><code class="docutils literal notranslate"><span class="pre">ActivationCache.save_activations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.ActivationCache.save_multi_layer_activations"><code class="docutils literal notranslate"><span class="pre">ActivationCache.save_multi_layer_activations()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.LazyLayerCache"><code class="docutils literal notranslate"><span class="pre">LazyLayerCache</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.LazyLayerCache.__init__"><code class="docutils literal notranslate"><span class="pre">LazyLayerCache.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.LazyLayerCache.clear_loaded_layers"><code class="docutils literal notranslate"><span class="pre">LazyLayerCache.clear_loaded_layers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.LazyLayerCache.get_available_layers"><code class="docutils literal notranslate"><span class="pre">LazyLayerCache.get_available_layers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.LazyLayerCache.get_layer"><code class="docutils literal notranslate"><span class="pre">LazyLayerCache.get_layer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.LazyLayerCache.get_layers"><code class="docutils literal notranslate"><span class="pre">LazyLayerCache.get_layers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.LazyLayerCache.get_metadata"><code class="docutils literal notranslate"><span class="pre">LazyLayerCache.get_metadata()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.LazyLayerCache.validate_context_type"><code class="docutils literal notranslate"><span class="pre">LazyLayerCache.validate_context_type()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.ModelSaver"><code class="docutils literal notranslate"><span class="pre">ModelSaver</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.ModelSaver.__init__"><code class="docutils literal notranslate"><span class="pre">ModelSaver.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.ModelSaver.list_runs"><code class="docutils literal notranslate"><span class="pre">ModelSaver.list_runs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.ModelSaver.load_encoding_model"><code class="docutils literal notranslate"><span class="pre">ModelSaver.load_encoding_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.ModelSaver.save_encoding_model"><code class="docutils literal notranslate"><span class="pre">ModelSaver.save_encoding_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.SpeechActivationCache"><code class="docutils literal notranslate"><span class="pre">SpeechActivationCache</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechActivationCache.__init__"><code class="docutils literal notranslate"><span class="pre">SpeechActivationCache.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechActivationCache.get_cache_key"><code class="docutils literal notranslate"><span class="pre">SpeechActivationCache.get_cache_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechActivationCache.get_cache_path"><code class="docutils literal notranslate"><span class="pre">SpeechActivationCache.get_cache_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechActivationCache.load_activations"><code class="docutils literal notranslate"><span class="pre">SpeechActivationCache.load_activations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechActivationCache.load_multi_layer_activations"><code class="docutils literal notranslate"><span class="pre">SpeechActivationCache.load_multi_layer_activations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechActivationCache.save_activations"><code class="docutils literal notranslate"><span class="pre">SpeechActivationCache.save_activations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechActivationCache.save_multi_layer_activations"><code class="docutils literal notranslate"><span class="pre">SpeechActivationCache.save_multi_layer_activations()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.SpeechLazyLayerCache"><code class="docutils literal notranslate"><span class="pre">SpeechLazyLayerCache</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechLazyLayerCache.__init__"><code class="docutils literal notranslate"><span class="pre">SpeechLazyLayerCache.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechLazyLayerCache.clear_loaded_layers"><code class="docutils literal notranslate"><span class="pre">SpeechLazyLayerCache.clear_loaded_layers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechLazyLayerCache.get_available_layers"><code class="docutils literal notranslate"><span class="pre">SpeechLazyLayerCache.get_available_layers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechLazyLayerCache.get_layer"><code class="docutils literal notranslate"><span class="pre">SpeechLazyLayerCache.get_layer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechLazyLayerCache.get_layers"><code class="docutils literal notranslate"><span class="pre">SpeechLazyLayerCache.get_layers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechLazyLayerCache.get_metadata"><code class="docutils literal notranslate"><span class="pre">SpeechLazyLayerCache.get_metadata()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechLazyLayerCache.get_times"><code class="docutils literal notranslate"><span class="pre">SpeechLazyLayerCache.get_times()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.utils.SpeechLazyLayerCache.validate_params"><code class="docutils literal notranslate"><span class="pre">SpeechLazyLayerCache.validate_params()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.demean"><code class="docutils literal notranslate"><span class="pre">demean()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.dm"><code class="docutils literal notranslate"><span class="pre">dm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.make_delayed"><code class="docutils literal notranslate"><span class="pre">make_delayed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.mcorr"><code class="docutils literal notranslate"><span class="pre">mcorr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.rescale"><code class="docutils literal notranslate"><span class="pre">rescale()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.rs"><code class="docutils literal notranslate"><span class="pre">rs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.unmask_correlations_for_plotting"><code class="docutils literal notranslate"><span class="pre">unmask_correlations_for_plotting()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.validate_path"><code class="docutils literal notranslate"><span class="pre">validate_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.xcorr"><code class="docutils literal notranslate"><span class="pre">xcorr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.zs"><code class="docutils literal notranslate"><span class="pre">zs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.utils.zscore"><code class="docutils literal notranslate"><span class="pre">zscore()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">litcoder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+      <li class="breadcrumb-item active">encoding.utils</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/encoding.utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-encoding.utils">
+<span id="encoding-utils"></span><h1>encoding.utils<a class="headerlink" href="#module-encoding.utils" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="encoding.utils.ActivationCache">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">ActivationCache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cache'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.ActivationCache" title="Link to this definition"></a></dt>
+<dd><p>Handles caching and loading of language model activations with multi-layer support.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.ActivationCache.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cache'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.ActivationCache.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cache_dir</strong> – Directory to store cached activations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.ActivationCache.get_cache_path">
+<span class="sig-name descname"><span class="pre">get_cache_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="headerlink" href="#encoding.utils.ActivationCache.get_cache_path" title="Link to this definition"></a></dt>
+<dd><p>Get the path for a cached activation file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.ActivationCache.load_activations">
+<span class="sig-name descname"><span class="pre">load_activations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#encoding.utils.ActivationCache.load_activations" title="Link to this definition"></a></dt>
+<dd><p>Load single layer activations from cache (backward compatibility).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.ActivationCache.load_multi_layer_activations">
+<span class="sig-name descname"><span class="pre">load_multi_layer_activations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#encoding.utils.LazyLayerCache" title="encoding.utils.LazyLayerCache"><span class="pre">LazyLayerCache</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#encoding.utils.ActivationCache.load_multi_layer_activations" title="Link to this definition"></a></dt>
+<dd><p>Load multi-layer activations from cache with lazy loading.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cache_key</strong> – Cache key for the activations</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>LazyLayerCache object if cache exists, None otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.ActivationCache.save_activations">
+<span class="sig-name descname"><span class="pre">save_activations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.ActivationCache.save_activations" title="Link to this definition"></a></dt>
+<dd><p>Save single layer activations to cache (backward compatibility).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.ActivationCache.save_multi_layer_activations">
+<span class="sig-name descname"><span class="pre">save_multi_layer_activations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_layer_activations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#encoding.utils.ActivationCache.save_multi_layer_activations" title="Link to this definition"></a></dt>
+<dd><p>Save multi-layer activations to cache with lazy loading support.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cache_key</strong> – Cache key for the activations</p></li>
+<li><p><strong>all_layer_activations</strong> – Dictionary mapping layer indices to activations</p></li>
+<li><p><strong>metadata</strong> – Metadata about the cached activations</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="encoding.utils.LazyLayerCache">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">LazyLayerCache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.LazyLayerCache" title="Link to this definition"></a></dt>
+<dd><p>Lazy loading cache for multi-layer activations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.LazyLayerCache.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.LazyLayerCache.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the lazy layer cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cache_file_path</strong> – Path to the cache file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.LazyLayerCache.clear_loaded_layers">
+<span class="sig-name descname"><span class="pre">clear_loaded_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#encoding.utils.LazyLayerCache.clear_loaded_layers" title="Link to this definition"></a></dt>
+<dd><p>Clear loaded layers from memory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.LazyLayerCache.get_available_layers">
+<span class="sig-name descname"><span class="pre">get_available_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#encoding.utils.LazyLayerCache.get_available_layers" title="Link to this definition"></a></dt>
+<dd><p>Get list of available layers in the cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of available layer indices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.LazyLayerCache.get_layer">
+<span class="sig-name descname"><span class="pre">get_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#encoding.utils.LazyLayerCache.get_layer" title="Link to this definition"></a></dt>
+<dd><p>Load specific layer on demand.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>layer_idx</strong> – Index of the layer to load</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Layer activations as numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.LazyLayerCache.get_layers">
+<span class="sig-name descname"><span class="pre">get_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#encoding.utils.LazyLayerCache.get_layers" title="Link to this definition"></a></dt>
+<dd><p>Load multiple specific layers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>layer_indices</strong> – List of layer indices to load</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of layer activations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.LazyLayerCache.get_metadata">
+<span class="sig-name descname"><span class="pre">get_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#encoding.utils.LazyLayerCache.get_metadata" title="Link to this definition"></a></dt>
+<dd><p>Load only metadata (fast).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary containing cache metadata</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.LazyLayerCache.validate_context_type">
+<span class="sig-name descname"><span class="pre">validate_context_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expected_context_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#encoding.utils.LazyLayerCache.validate_context_type" title="Link to this definition"></a></dt>
+<dd><p>Validate that the cache was created with the expected context type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>expected_context_type</strong> – Expected context type</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If context type doesn’t match</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="encoding.utils.ModelSaver">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">ModelSaver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'results'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.ModelSaver" title="Link to this definition"></a></dt>
+<dd><p>Class for saving and loading model weights and hyperparameters.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.ModelSaver.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'results'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.ModelSaver.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the ModelSaver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>base_dir</strong> – Base directory for saving results</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.ModelSaver.list_runs">
+<span class="sig-name descname"><span class="pre">list_runs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#encoding.utils.ModelSaver.list_runs" title="Link to this definition"></a></dt>
+<dd><p>List all saved runs with their hyperparameters and metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of dictionaries containing run information</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.ModelSaver.load_encoding_model">
+<span class="sig-name descname"><span class="pre">load_encoding_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#encoding.utils.ModelSaver.load_encoding_model" title="Link to this definition"></a></dt>
+<dd><p>Load encoding model weights and hyperparameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>run_dir</strong> – Path to the run directory</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple of (weights, best_alphas, hyperparams, metrics)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.ModelSaver.save_encoding_model">
+<span class="sig-name descname"><span class="pre">save_encoding_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">best_alphas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="headerlink" href="#encoding.utils.ModelSaver.save_encoding_model" title="Link to this definition"></a></dt>
+<dd><p>Save encoding model weights and hyperparameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weights</strong> – Model weights (n_features, n_targets)</p></li>
+<li><p><strong>best_alphas</strong> – Best alpha values for each target</p></li>
+<li><p><strong>hyperparams</strong> – Dictionary of hyperparameters</p></li>
+<li><p><strong>metrics</strong> – Dictionary of evaluation metrics</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path to the run directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="encoding.utils.SpeechActivationCache">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">SpeechActivationCache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'speech_cache'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.SpeechActivationCache" title="Link to this definition"></a></dt>
+<dd><p>Caching for speech model activations (multi-layer, single .pkl file).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechActivationCache.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'speech_cache'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.SpeechActivationCache.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechActivationCache.get_cache_key">
+<span class="sig-name descname"><span class="pre">get_cache_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_sample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'speech'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#encoding.utils.SpeechActivationCache.get_cache_key" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechActivationCache.get_cache_path">
+<span class="sig-name descname"><span class="pre">get_cache_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="headerlink" href="#encoding.utils.SpeechActivationCache.get_cache_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechActivationCache.load_activations">
+<span class="sig-name descname"><span class="pre">load_activations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#encoding.utils.SpeechActivationCache.load_activations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechActivationCache.load_multi_layer_activations">
+<span class="sig-name descname"><span class="pre">load_multi_layer_activations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#encoding.utils.SpeechLazyLayerCache" title="encoding.utils.SpeechLazyLayerCache"><span class="pre">SpeechLazyLayerCache</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#encoding.utils.SpeechActivationCache.load_multi_layer_activations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechActivationCache.save_activations">
+<span class="sig-name descname"><span class="pre">save_activations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.SpeechActivationCache.save_activations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechActivationCache.save_multi_layer_activations">
+<span class="sig-name descname"><span class="pre">save_multi_layer_activations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_layer_activations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#encoding.utils.SpeechActivationCache.save_multi_layer_activations" title="Link to this definition"></a></dt>
+<dd><dl>
+<dt>Persist to a single pickle:</dt><dd><dl class="simple">
+<dt>{</dt><dd><p>“metadata”: { … speech params … },
+“layers”: { int: np.ndarray [n_chunks, D], … },
+“times”: np.ndarray [n_chunks] or None</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="encoding.utils.SpeechLazyLayerCache">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">SpeechLazyLayerCache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.SpeechLazyLayerCache" title="Link to this definition"></a></dt>
+<dd><p>Lazy (API-compatible) loader for speech multi-layer activations (single .pkl file).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechLazyLayerCache.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.SpeechLazyLayerCache.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechLazyLayerCache.clear_loaded_layers">
+<span class="sig-name descname"><span class="pre">clear_loaded_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#encoding.utils.SpeechLazyLayerCache.clear_loaded_layers" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechLazyLayerCache.get_available_layers">
+<span class="sig-name descname"><span class="pre">get_available_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#encoding.utils.SpeechLazyLayerCache.get_available_layers" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechLazyLayerCache.get_layer">
+<span class="sig-name descname"><span class="pre">get_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#encoding.utils.SpeechLazyLayerCache.get_layer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechLazyLayerCache.get_layers">
+<span class="sig-name descname"><span class="pre">get_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#encoding.utils.SpeechLazyLayerCache.get_layers" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechLazyLayerCache.get_metadata">
+<span class="sig-name descname"><span class="pre">get_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#encoding.utils.SpeechLazyLayerCache.get_metadata" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechLazyLayerCache.get_times">
+<span class="sig-name descname"><span class="pre">get_times</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#encoding.utils.SpeechLazyLayerCache.get_times" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.utils.SpeechLazyLayerCache.validate_params">
+<span class="sig-name descname"><span class="pre">validate_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#encoding.utils.SpeechLazyLayerCache.validate_params" title="Link to this definition"></a></dt>
+<dd><p>Validate core speech params match (e.g., model_name, chunk/context size, pool, sr).
+Raises ValueError on mismatch.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="encoding.utils.demean">
+<span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">demean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.demean" title="Link to this definition"></a></dt>
+<dd><p>Removes the mean from each column of [v].</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="encoding.utils.dm">
+<span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">dm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.dm" title="Link to this definition"></a></dt>
+<dd><p>Removes the mean from each column of [v].</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="encoding.utils.make_delayed">
+<span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">make_delayed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circpad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.make_delayed" title="Link to this definition"></a></dt>
+<dd><p>Creates non-interpolated concatenated delayed versions of [stim] with the given [delays]
+(in samples).</p>
+<p>If [circpad], instead of being padded with zeros, [stim] will be circularly shifted.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="encoding.utils.mcorr">
+<span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">mcorr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.mcorr" title="Link to this definition"></a></dt>
+<dd><p>Matrix correlation. Find the correlation between each column of [c1] and the corresponding column of [c2].</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="encoding.utils.rescale">
+<span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">rescale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.rescale" title="Link to this definition"></a></dt>
+<dd><p>Rescales each column of [v] to have unit variance.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="encoding.utils.rs">
+<span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">rs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.rs" title="Link to this definition"></a></dt>
+<dd><p>Rescales each column of [v] to have unit variance.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="encoding.utils.unmask_correlations_for_plotting">
+<span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">unmask_correlations_for_plotting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masked_correlations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#encoding.utils.unmask_correlations_for_plotting" title="Link to this definition"></a></dt>
+<dd><p>Expand masked correlations back to full brain size for plotting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>masked_correlations</strong> – Correlations from masked analysis (n_masked_voxels,)</p></li>
+<li><p><strong>mask_indices</strong> – Indices where mask was True (n_masked_voxels,)</p></li>
+<li><p><strong>full_size</strong> – Size of full brain (e.g., 20484 for fsaverage5)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Full-size array with NaNs in unmasked regions (full_size,)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>full_correlations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="encoding.utils.validate_path">
+<span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">validate_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.validate_path" title="Link to this definition"></a></dt>
+<dd><p>Decorator to validate that assembly_path exists before loading.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="encoding.utils.xcorr">
+<span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">xcorr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.xcorr" title="Link to this definition"></a></dt>
+<dd><p>Cross-column correlation. Finds the correlation between each row of [c1] and each row of [c2].</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="encoding.utils.zs">
+<span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">zs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.zs" title="Link to this definition"></a></dt>
+<dd><p>Z-scores (standardizes) each column of [v].</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="encoding.utils.zscore">
+<span class="sig-prename descclassname"><span class="pre">encoding.utils.</span></span><span class="sig-name descname"><span class="pre">zscore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#encoding.utils.zscore" title="Link to this definition"></a></dt>
+<dd><p>Z-scores (standardizes) each column of [v].</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="encoding.trainer.html" class="btn btn-neutral float-left" title="encoding.trainer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Taha Binhuraib, Ruimin Gao, Anya Ivanova.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

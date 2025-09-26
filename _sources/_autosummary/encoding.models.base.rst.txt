@@ -1,0 +1,6 @@
+﻿encoding.models.base
+====================
+
+.. currentmodule:: encoding.models
+
+.. autodata:: base

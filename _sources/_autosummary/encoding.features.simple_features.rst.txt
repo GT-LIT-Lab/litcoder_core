@@ -1,0 +1,6 @@
+﻿encoding.features.simple\_features
+==================================
+
+.. currentmodule:: encoding.features
+
+.. autodata:: simple_features

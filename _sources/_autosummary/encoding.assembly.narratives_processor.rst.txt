@@ -1,0 +1,6 @@
+﻿encoding.assembly.narratives\_processor
+=======================================
+
+.. currentmodule:: encoding.assembly
+
+.. autodata:: narratives_processor

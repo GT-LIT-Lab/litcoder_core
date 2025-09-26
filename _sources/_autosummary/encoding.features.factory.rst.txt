@@ -1,0 +1,6 @@
+﻿encoding.features.factory
+=========================
+
+.. currentmodule:: encoding.features
+
+.. autodata:: factory

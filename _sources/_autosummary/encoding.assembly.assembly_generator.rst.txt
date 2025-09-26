@@ -1,0 +1,6 @@
+﻿encoding.assembly.assembly\_generator
+=====================================
+
+.. currentmodule:: encoding.assembly
+
+.. autodata:: assembly_generator

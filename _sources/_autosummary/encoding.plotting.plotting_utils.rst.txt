@@ -1,0 +1,6 @@
+﻿encoding.plotting.plotting\_utils
+=================================
+
+.. currentmodule:: encoding.plotting
+
+.. autodata:: plotting_utils

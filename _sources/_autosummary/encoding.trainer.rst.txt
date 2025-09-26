@@ -1,0 +1,6 @@
+﻿encoding.trainer
+================
+
+.. automodule:: encoding.trainer
+
+   

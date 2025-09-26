@@ -1,0 +1,6 @@
+﻿encoding.downsample.downsampling
+================================
+
+.. currentmodule:: encoding.downsample
+
+.. autodata:: downsampling

@@ -1,0 +1,6 @@
+﻿encoding.assembly.lebel\_processor
+==================================
+
+.. currentmodule:: encoding.assembly
+
+.. autodata:: lebel_processor

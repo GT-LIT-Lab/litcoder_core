@@ -1,0 +1,538 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>encoding.features &mdash; litcoder 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="encoding.features.factory" href="encoding.features.factory.html" />
+    <link rel="prev" title="encoding.assembly.assembly_generator" href="encoding.assembly.assembly_generator.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            litcoder
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assemblies.html">Assemblies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trainer.html">Trainer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../caching.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting.html">Plotting &amp; Logging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="encoding.html">encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.html">encoding.assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.assemblies.html">encoding.assembly.assemblies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.base_processor.html">encoding.assembly.base_processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.narratives_processor.html">encoding.assembly.narratives_processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.lpp_processor.html">encoding.assembly.lpp_processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.lebel_processor.html">encoding.assembly.lebel_processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.assembly_loader.html">encoding.assembly.assembly_loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.assembly.assembly_generator.html">encoding.assembly.assembly_generator</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">encoding.features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.features.LanguageModelFeatureExtractor"><code class="docutils literal notranslate"><span class="pre">LanguageModelFeatureExtractor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.LanguageModelFeatureExtractor.__init__"><code class="docutils literal notranslate"><span class="pre">LanguageModelFeatureExtractor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.LanguageModelFeatureExtractor.extract_features"><code class="docutils literal notranslate"><span class="pre">LanguageModelFeatureExtractor.extract_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.LanguageModelFeatureExtractor.extract_all_layers"><code class="docutils literal notranslate"><span class="pre">LanguageModelFeatureExtractor.extract_all_layers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.features.SpeechFeatureExtractor"><code class="docutils literal notranslate"><span class="pre">SpeechFeatureExtractor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.SpeechFeatureExtractor.__init__"><code class="docutils literal notranslate"><span class="pre">SpeechFeatureExtractor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.SpeechFeatureExtractor.extract_features"><code class="docutils literal notranslate"><span class="pre">SpeechFeatureExtractor.extract_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.SpeechFeatureExtractor.extract_all_layers"><code class="docutils literal notranslate"><span class="pre">SpeechFeatureExtractor.extract_all_layers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.features.WordRateFeatureExtractor"><code class="docutils literal notranslate"><span class="pre">WordRateFeatureExtractor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.WordRateFeatureExtractor.__init__"><code class="docutils literal notranslate"><span class="pre">WordRateFeatureExtractor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.WordRateFeatureExtractor.extract_features"><code class="docutils literal notranslate"><span class="pre">WordRateFeatureExtractor.extract_features()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.features.StaticEmbeddingFeatureExtractor"><code class="docutils literal notranslate"><span class="pre">StaticEmbeddingFeatureExtractor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.StaticEmbeddingFeatureExtractor.__init__"><code class="docutils literal notranslate"><span class="pre">StaticEmbeddingFeatureExtractor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.StaticEmbeddingFeatureExtractor.extract_features"><code class="docutils literal notranslate"><span class="pre">StaticEmbeddingFeatureExtractor.extract_features()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.features.FIR"><code class="docutils literal notranslate"><span class="pre">FIR</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.FIR.delays"><code class="docutils literal notranslate"><span class="pre">FIR.delays</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.FIR.circpad"><code class="docutils literal notranslate"><span class="pre">FIR.circpad</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.FIR.expand"><code class="docutils literal notranslate"><span class="pre">FIR.expand()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.FIR.make_delayed"><code class="docutils literal notranslate"><span class="pre">FIR.make_delayed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.FIR.n_delays"><code class="docutils literal notranslate"><span class="pre">FIR.n_delays()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.FIR.output_dim"><code class="docutils literal notranslate"><span class="pre">FIR.output_dim()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.FIR.valid_length"><code class="docutils literal notranslate"><span class="pre">FIR.valid_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.FIR.summary"><code class="docutils literal notranslate"><span class="pre">FIR.summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.FIR.__init__"><code class="docutils literal notranslate"><span class="pre">FIR.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding.features.FeatureExtractorFactory"><code class="docutils literal notranslate"><span class="pre">FeatureExtractorFactory</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.FeatureExtractorFactory.create_extractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractorFactory.create_extractor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.FeatureExtractorFactory.extract_features_with_caching"><code class="docutils literal notranslate"><span class="pre">FeatureExtractorFactory.extract_features_with_caching()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.FeatureExtractorFactory.get_supported_modalities"><code class="docutils literal notranslate"><span class="pre">FeatureExtractorFactory.get_supported_modalities()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding.features.FeatureExtractorFactory.register_extractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractorFactory.register_extractor()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.factory.html">encoding.features.factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.language_model.html">encoding.features.language_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.embeddings.html">encoding.features.embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.speech_model.html">encoding.features.speech_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.simple_features.html">encoding.features.simple_features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.features.FIR_expander.html">encoding.features.FIR_expander</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.downsample.html">encoding.downsample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.downsample.downsampling.html">encoding.downsample.downsampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.html">encoding.models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.base.html">encoding.models.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.ridge_regression.html">encoding.models.ridge_regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.linear.html">encoding.models.linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.nested_cv.html">encoding.models.nested_cv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.models.sklearn_model.html">encoding.models.sklearn_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.plotting.html">encoding.plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.plotting.plotting_utils.html">encoding.plotting.plotting_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.trainer.html">encoding.trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.utils.html">encoding.utils</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">litcoder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_reference.html">API Reference</a></li>
+      <li class="breadcrumb-item active">encoding.features</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/encoding.features.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-encoding.features">
+<span id="encoding-features"></span><h1>encoding.features<a class="headerlink" href="#module-encoding.features" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="encoding.features.LanguageModelFeatureExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">encoding.features.</span></span><span class="sig-name descname"><span class="pre">LanguageModelFeatureExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/encoding/features/language_model.html#LanguageModelFeatureExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.LanguageModelFeatureExtractor" title="Link to this definition"></a></dt>
+<dd><p>Feature extractor that uses HookedTransformer to extract embeddings from text.</p>
+<p>This extractor supports different language models and can extract features
+from either the last token or average across all tokens. It now supports
+multi-layer extraction with lazy loading.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.LanguageModelFeatureExtractor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/encoding/features/language_model.html#LanguageModelFeatureExtractor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.LanguageModelFeatureExtractor.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the language model feature extractor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Configuration dictionary containing:
+- model_name (str): Name of the language model to use
+- layer_idx (int): Index of the layer to extract features from (for backward compatibility)
+- hook_type (str): Type of hook to use (default: “hook_resid_pre”)
+- last_token (bool): Whether to use only the last token’s features
+- device (str): Device to run the model on (‘cuda’ or ‘cpu’)
+- context_type (str): Type of context to use (fullcontext, nocontext, halfcontext)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.LanguageModelFeatureExtractor.extract_features">
+<span class="sig-name descname"><span class="pre">extract_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stimuli</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="../_modules/encoding/features/language_model.html#LanguageModelFeatureExtractor.extract_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.LanguageModelFeatureExtractor.extract_features" title="Link to this definition"></a></dt>
+<dd><p>Extract features from the input stimuli using a for loop.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stimuli</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – Input text or list of texts</p></li>
+<li><p><strong>layer_idx</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Specific layer to extract from. If None, uses self.layer_idx</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments for feature extraction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Extracted features</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.LanguageModelFeatureExtractor.extract_all_layers">
+<span class="sig-name descname"><span class="pre">extract_all_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stimuli</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/encoding/features/language_model.html#LanguageModelFeatureExtractor.extract_all_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.LanguageModelFeatureExtractor.extract_all_layers" title="Link to this definition"></a></dt>
+<dd><p>Extract features from all layers for the input stimuli.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stimuli</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – Input text or list of texts</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments for feature extraction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary mapping layer indices to features</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[int, np.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="encoding.features.SpeechFeatureExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">encoding.features.</span></span><span class="sig-name descname"><span class="pre">SpeechFeatureExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'last'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'last'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_sample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disable_tqdm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/encoding/features/speech_model.html#SpeechFeatureExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.SpeechFeatureExtractor" title="Link to this definition"></a></dt>
+<dd><p>Unified feature extractor for HF speech models (Whisper encoder, HuBERT, Wav2Vec2).</p>
+<ul class="simple">
+<li><p>extract_features(wav_path, layer=None) -&gt; (features [n_chunks, D], times [n_chunks])</p></li>
+<li><p>extract_all_layers(wav_path) -&gt; (layer_to_features {idx: [n_chunks, D]}, times [n_chunks])</p></li>
+</ul>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Pooling over encoder time can be ‘last’ or ‘mean’.</p></li>
+<li><p>For Whisper, we call the ENCODER ONLY (model.get_encoder()).</p></li>
+<li><p>‘layer’ indices are 0-based over encoder blocks (exclude embeddings).</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.SpeechFeatureExtractor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'last'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'last'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_sample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disable_tqdm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/encoding/features/speech_model.html#SpeechFeatureExtractor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.SpeechFeatureExtractor.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.SpeechFeatureExtractor.extract_features">
+<span class="sig-name descname"><span class="pre">extract_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/encoding/features/speech_model.html#SpeechFeatureExtractor.extract_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.SpeechFeatureExtractor.extract_features" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.SpeechFeatureExtractor.extract_all_layers">
+<span class="sig-name descname"><span class="pre">extract_all_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/encoding/features/speech_model.html#SpeechFeatureExtractor.extract_all_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.SpeechFeatureExtractor.extract_all_layers" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="encoding.features.WordRateFeatureExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">encoding.features.</span></span><span class="sig-name descname"><span class="pre">WordRateFeatureExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/encoding/features/simple_features.html#WordRateFeatureExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.WordRateFeatureExtractor" title="Link to this definition"></a></dt>
+<dd><p>Feature extractor for pre-computed word rate features.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.WordRateFeatureExtractor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/encoding/features/simple_features.html#WordRateFeatureExtractor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.WordRateFeatureExtractor.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the feature extractor with configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Configuration dictionary containing extractor parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.WordRateFeatureExtractor.extract_features">
+<span class="sig-name descname"><span class="pre">extract_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stimuli</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="../_modules/encoding/features/simple_features.html#WordRateFeatureExtractor.extract_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.WordRateFeatureExtractor.extract_features" title="Link to this definition"></a></dt>
+<dd><p>Return pre-computed word rate features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stimuli</strong> – Pre-computed word rate array</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Word rate features with shape (n_timepoints, 1)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="encoding.features.StaticEmbeddingFeatureExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">encoding.features.</span></span><span class="sig-name descname"><span class="pre">StaticEmbeddingFeatureExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/encoding/features/embeddings.html#StaticEmbeddingFeatureExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.StaticEmbeddingFeatureExtractor" title="Link to this definition"></a></dt>
+<dd><p>Local-only static <em>token</em> embedding extractor (Word2Vec / GloVe).</p>
+<dl>
+<dt>Input  (extract_features):</dt><dd><ul class="simple">
+<li><p>List[str]: list of tokens/words (preferred), order preserved</p></li>
+<li><p>str: a raw string (will be tokenized using <cite>tokenizer_pattern</cite>)</p></li>
+</ul>
+</dd>
+<dt>Output:</dt><dd><ul class="simple">
+<li><p>np.ndarray with shape [N, D], one row per input token.</p></li>
+</ul>
+</dd>
+<dt>Config (Dict[str, Any]):</dt><dd><ul>
+<li><dl class="simple">
+<dt>vector_path (str, required): local vectors path. Supported:</dt><dd><p><a href="#id1"><span class="problematic" id="id2">*</span></a>.kv                -&gt; KeyedVectors.load (mmap capable)
+<a href="#id3"><span class="problematic" id="id4">*</span></a>.bin / <a href="#id5"><span class="problematic" id="id6">*</span></a>.bin.gz    -&gt; word2vec binary (binary=True)
+<a href="#id7"><span class="problematic" id="id8">*</span></a>.w2v.txt           -&gt; word2vec text WITH header (binary=False, no_header=False)
+<a href="#id9"><span class="problematic" id="id10">*</span></a>.txt / <a href="#id11"><span class="problematic" id="id12">*</span></a>.txt.gz    -&gt; GloVe text WITHOUT header (binary=False, no_header=True)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>lowercase (bool): lowercase tokens before lookup</dt><dd><p>(GoogleNews: False; GloVe/Wiki-Giga: True)  [default: True]</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>oov_handling (str): one of:</dt><dd><p>“copy_prev”  -&gt; OOV copies the previous valid embedding (DEFAULT)
+“zero”       -&gt; OOV becomes a zero vector (length preserved)
+“skip”       -&gt; OOV is dropped (length may shrink)
+“error”      -&gt; raise on first OOV</p>
+</dd>
+</dl>
+</li>
+<li><p>use_tqdm (bool): show progress bar for long inputs [default: True]</p></li>
+<li><p>mmap (bool): memory-map .kv [default: True]</p></li>
+<li><p>binary (Optional[bool]): force word2vec binary flag; auto-infer if None</p></li>
+<li><p>no_header (Optional[bool]): force GloVe no-header; auto-infer if None</p></li>
+<li><p>l2_normalize_tokens (bool): L2-normalize each token vector [default: False]</p></li>
+<li><dl class="simple">
+<dt>tokenizer_pattern (str): ONLY used if input is a single string.</dt><dd><p>Default r”[<a href="#id13"><span class="problematic" id="id14">A-Za-z0-9_</span></a>’]+” (keeps underscores)</p>
+</dd>
+</dl>
+<p>Note: This has also been tested with ENG1000. You just have to convert it to the .kv format first. We’ll provide a scrip to do that!</p>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.StaticEmbeddingFeatureExtractor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/encoding/features/embeddings.html#StaticEmbeddingFeatureExtractor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.StaticEmbeddingFeatureExtractor.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the feature extractor with configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Configuration dictionary containing extractor parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.StaticEmbeddingFeatureExtractor.extract_features">
+<span class="sig-name descname"><span class="pre">extract_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stimuli</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="../_modules/encoding/features/embeddings.html#StaticEmbeddingFeatureExtractor.extract_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.StaticEmbeddingFeatureExtractor.extract_features" title="Link to this definition"></a></dt>
+<dd><p>Tokens -&gt; [N, D], one row per input token. If <cite>stimuli</cite> is a string, it is tokenized.
+OOV handling per config (default: copy previous valid embedding).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="encoding.features.FIR">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">encoding.features.</span></span><span class="sig-name descname"><span class="pre">FIR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delays</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circpad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/encoding/features/FIR_expander.html#FIR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.FIR" title="Link to this definition"></a></dt>
+<dd><p>Finite Impulse Response (FIR) expander for creating delayed feature matrices.</p>
+<dl class="simple">
+<dt>Usage options:</dt><dd><ul class="simple">
+<li><p>Static/class usage: FIR.make_delayed(stim, delays, circpad=False)</p></li>
+<li><p>Instance usage: FIR(delays, circpad).expand(stim)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="encoding.features.FIR.delays">
+<span class="sig-name descname"><span class="pre">delays</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#encoding.features.FIR.delays" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="encoding.features.FIR.circpad">
+<span class="sig-name descname"><span class="pre">circpad</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#encoding.features.FIR.circpad" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.FIR.expand">
+<span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="../_modules/encoding/features/FIR_expander.html#FIR.expand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.FIR.expand" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.FIR.make_delayed">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make_delayed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delays</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circpad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="../_modules/encoding/features/FIR_expander.html#FIR.make_delayed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.FIR.make_delayed" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.FIR.n_delays">
+<span class="sig-name descname"><span class="pre">n_delays</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/encoding/features/FIR_expander.html#FIR.n_delays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.FIR.n_delays" title="Link to this definition"></a></dt>
+<dd><p>Return the number of delays used.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.FIR.output_dim">
+<span class="sig-name descname"><span class="pre">output_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/encoding/features/FIR_expander.html#FIR.output_dim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.FIR.output_dim" title="Link to this definition"></a></dt>
+<dd><p>Return the output dimensionality after FIR expansion.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.FIR.valid_length">
+<span class="sig-name descname"><span class="pre">valid_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/encoding/features/FIR_expander.html#FIR.valid_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.FIR.valid_length" title="Link to this definition"></a></dt>
+<dd><p>Number of valid time points (non-padded).
+With circpad=True, always nt.
+Without circpad, depends on max shift.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.FIR.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/encoding/features/FIR_expander.html#FIR.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.FIR.summary" title="Link to this definition"></a></dt>
+<dd><p>Return a readable summary of FIR configuration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.FIR.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delays</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circpad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#encoding.features.FIR.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="encoding.features.FeatureExtractorFactory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">encoding.features.</span></span><span class="sig-name descname"><span class="pre">FeatureExtractorFactory</span></span><a class="reference internal" href="../_modules/encoding/features/factory.html#FeatureExtractorFactory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.FeatureExtractorFactory" title="Link to this definition"></a></dt>
+<dd><p>Factory class for creating feature extractors with caching support.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.FeatureExtractorFactory.create_extractor">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_extractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modality</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cache'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BaseFeatureExtractor</span></span></span><a class="reference internal" href="../_modules/encoding/features/factory.html#FeatureExtractorFactory.create_extractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.FeatureExtractorFactory.create_extractor" title="Link to this definition"></a></dt>
+<dd><p>Create a feature extractor based on modality and model name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modality</strong> – The type of feature extractor (‘language_model’, ‘speech’, ‘wordrate’, ‘embeddings’)</p></li>
+<li><p><strong>model_name</strong> – The specific model name (e.g., ‘gpt2-small’, ‘word2vec’, ‘openai/whisper-tiny’)</p></li>
+<li><p><strong>config</strong> – Configuration dictionary for the extractor</p></li>
+<li><p><strong>cache_dir</strong> – Directory for caching</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The appropriate feature extractor instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BaseFeatureExtractor</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If modality is not supported</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.FeatureExtractorFactory.extract_features_with_caching">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extract_features_with_caching</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extractor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseFeatureExtractor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assembly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">story</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'narratives'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/encoding/features/factory.html#FeatureExtractorFactory.extract_features_with_caching"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.FeatureExtractorFactory.extract_features_with_caching" title="Link to this definition"></a></dt>
+<dd><p>Extract features with caching support.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>extractor</strong> – The feature extractor instance</p></li>
+<li><p><strong>assembly</strong> – The assembly containing data</p></li>
+<li><p><strong>story</strong> – Story name</p></li>
+<li><p><strong>idx</strong> – Story index</p></li>
+<li><p><strong>layer_idx</strong> – Layer index for multi-layer extractors</p></li>
+<li><p><strong>lookback</strong> – Number of tokens to look back (for language models)</p></li>
+<li><p><strong>dataset_type</strong> – Type of dataset (e.g., ‘narratives’, ‘lebel’, etc.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Features array, or (features, times) tuple for speech</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.FeatureExtractorFactory.get_supported_modalities">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_supported_modalities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../_modules/encoding/features/factory.html#FeatureExtractorFactory.get_supported_modalities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.FeatureExtractorFactory.get_supported_modalities" title="Link to this definition"></a></dt>
+<dd><p>Get list of supported modalities.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="encoding.features.FeatureExtractorFactory.register_extractor">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register_extractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modality</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extractor_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/encoding/features/factory.html#FeatureExtractorFactory.register_extractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#encoding.features.FeatureExtractorFactory.register_extractor" title="Link to this definition"></a></dt>
+<dd><p>Register a new feature extractor class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modality</strong> – The modality name</p></li>
+<li><p><strong>extractor_class</strong> – The extractor class to register</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="encoding.assembly.assembly_generator.html" class="btn btn-neutral float-left" title="encoding.assembly.assembly_generator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="encoding.features.factory.html" class="btn btn-neutral float-right" title="encoding.features.factory" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Taha Binhuraib, Ruimin Gao, Anya Ivanova.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

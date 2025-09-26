@@ -1,0 +1,6 @@
+﻿encoding.models.sklearn\_model
+==============================
+
+.. currentmodule:: encoding.models
+
+.. autodata:: sklearn_model

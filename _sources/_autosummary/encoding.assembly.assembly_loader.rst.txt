@@ -1,0 +1,6 @@
+﻿encoding.assembly.assembly\_loader
+==================================
+
+.. currentmodule:: encoding.assembly
+
+.. autodata:: assembly_loader

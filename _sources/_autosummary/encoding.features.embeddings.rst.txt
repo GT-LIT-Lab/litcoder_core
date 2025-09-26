@@ -1,0 +1,6 @@
+﻿encoding.features.embeddings
+============================
+
+.. currentmodule:: encoding.features
+
+.. autodata:: embeddings
