@@ -229,6 +229,7 @@ This repository is under active development. We will continue to add many featur
 
 - [ ] **Add comprehensive test suite** - Unit tests, integration tests, and validation tests
 - [ ] **Migrate to PyPI** - Package distribution and easy installation via `pip`
+- [ ] **Google colab quickstart tutorial** - Coming soon(09/29/2025)
 
 ### 🔮 Future Enhancements
 
