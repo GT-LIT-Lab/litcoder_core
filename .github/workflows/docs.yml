@@ -1,18 +1,23 @@
 # .github/workflows/docs.yml
 name: Build and Deploy Documentation
-
 on:
   push:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
 
+# Add permissions for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   docs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4  # Updated to v4
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -31,7 +36,7 @@ jobs:
     
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4  # Updated to v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/_build/html
