@@ -12,6 +12,16 @@ Welcome to litcoder's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :caption: Tutorials
+
+   assemblies_tutorial
+   tutorial_wordrate
+   tutorial_language_models
+   tutorial_speech
+   tutorial_embeddings
+
+.. toctree::
+   :maxdepth: 2
    :caption: Guides
 
    architecture

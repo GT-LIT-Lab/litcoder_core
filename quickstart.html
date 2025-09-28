@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Architecture" href="architecture.html" />
+    <link rel="next" title="Understanding Assemblies in LITcoder" href="assemblies_tutorial.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
@@ -46,7 +46,18 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="assemblies_tutorial.html">Understanding Assemblies in LITcoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_wordrate.html">Word Rate Feature Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_language_models.html">Language Model Features Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_speech.html">Speech Features Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_embeddings.html">Static Embeddings Tutorial</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Guides</span></p>
 <ul>
@@ -89,45 +100,83 @@
              
   <section id="quickstart">
 <h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h1>
-<p>This minimal example wires an assembly, feature extractor, downsampler, model, and the trainer.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">encoding.assembly.assemblies</span><span class="w"> </span><span class="kn">import</span> <span class="n">NarrativesAssembly</span>
+<p>This minimal example shows how to train an encoding model using the LeBel assembly with word rate features. This is the simplest and fastest way to get started with LITcoder.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">encoding.assembly.assembly_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_assembly</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">encoding.features.factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">FeatureExtractorFactory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">encoding.downsample.downsampling</span><span class="w"> </span><span class="kn">import</span> <span class="n">Downsampler</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">encoding.models.ridge_regression</span><span class="w"> </span><span class="kn">import</span> <span class="n">RidgeRegressionModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">encoding.models.nested_cv</span><span class="w"> </span><span class="kn">import</span> <span class="n">NestedCVModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">encoding.trainer</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractTrainer</span>
 
-<span class="c1"># 1) Load data (example: Narratives-style assembly)</span>
-<span class="n">assembly</span> <span class="o">=</span> <span class="n">NarrativesAssembly</span><span class="p">(</span><span class="n">assembly_path</span><span class="o">=</span><span class="s2">&quot;/path/to/narratives.h5&quot;</span><span class="p">)</span>
+<span class="c1"># 1) Load prepackaged assembly</span>
+<span class="n">assembly_path</span> <span class="o">=</span> <span class="s2">&quot;assembly_lebel_uts03.pkl&quot;</span>
+<span class="n">assembly</span> <span class="o">=</span> <span class="n">load_assembly</span><span class="p">(</span><span class="n">assembly_path</span><span class="p">)</span>
 
-<span class="c1"># 2) Configure features (e.g., language model embeddings)</span>
-<span class="n">extractor</span> <span class="o">=</span> <span class="n">FeatureExtractorFactory</span><span class="o">.</span><span class="n">create_language_model</span><span class="p">(</span>
-    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;gpt2&quot;</span><span class="p">,</span> <span class="n">context_type</span><span class="o">=</span><span class="s2">&quot;fullcontext&quot;</span><span class="p">,</span> <span class="n">last_token</span><span class="o">=</span><span class="kc">True</span>
+<span class="c1"># 2) Configure components (wordrate-only)</span>
+<span class="n">extractor</span> <span class="o">=</span> <span class="n">FeatureExtractorFactory</span><span class="o">.</span><span class="n">create_extractor</span><span class="p">(</span>
+    <span class="n">modality</span><span class="o">=</span><span class="s2">&quot;wordrate&quot;</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;wordrate&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">cache_dir</span><span class="o">=</span><span class="s2">&quot;cache&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="c1"># 3) Downsampler</span>
-<span class="n">downsampler</span> <span class="o">=</span> <span class="n">Downsampler</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span>
+<span class="n">downsampler</span> <span class="o">=</span> <span class="n">Downsampler</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">NestedCVModel</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;ridge_regression&quot;</span><span class="p">)</span>
 
-<span class="c1"># 4) Model</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">RidgeRegressionModel</span><span class="p">(</span><span class="n">n_alphas</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="c1"># FIR, downsampling, and trimming match our LeBel defaults</span>
+<span class="n">fir_delays</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">trimming_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;train_features_start&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;train_features_end&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span>
+    <span class="s2">&quot;train_targets_start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="s2">&quot;train_targets_end&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;test_features_start&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>  <span class="s2">&quot;test_features_end&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span>
+    <span class="s2">&quot;test_targets_start&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>   <span class="s2">&quot;test_targets_end&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">}</span>
 
-<span class="c1"># 5) Trainer</span>
+<span class="n">downsample_config</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># 3) Train</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">AbstractTrainer</span><span class="p">(</span>
     <span class="n">assembly</span><span class="o">=</span><span class="n">assembly</span><span class="p">,</span>
     <span class="n">feature_extractors</span><span class="o">=</span><span class="p">[</span><span class="n">extractor</span><span class="p">],</span>
     <span class="n">downsampler</span><span class="o">=</span><span class="n">downsampler</span><span class="p">,</span>
     <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
-    <span class="n">fir_delays</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-    <span class="n">trimming_config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;features_start&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;targets_start&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
-    <span class="n">use_train_test_split</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">dataset_type</span><span class="o">=</span><span class="s2">&quot;narratives&quot;</span><span class="p">,</span>
-    <span class="n">logger_backend</span><span class="o">=</span><span class="s2">&quot;tensorboard&quot;</span><span class="p">,</span>
+    <span class="n">fir_delays</span><span class="o">=</span><span class="n">fir_delays</span><span class="p">,</span>
+    <span class="n">trimming_config</span><span class="o">=</span><span class="n">trimming_config</span><span class="p">,</span>
+    <span class="n">use_train_test_split</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">logger_backend</span><span class="o">=</span><span class="s2">&quot;wandb&quot;</span><span class="p">,</span>
+    <span class="n">wandb_project_name</span><span class="o">=</span><span class="s2">&quot;lebel-wordrate&quot;</span><span class="p">,</span>
+    <span class="n">dataset_type</span><span class="o">=</span><span class="s2">&quot;lebel&quot;</span><span class="p">,</span>
     <span class="n">results_dir</span><span class="o">=</span><span class="s2">&quot;results&quot;</span><span class="p">,</span>
+    <span class="n">downsample_config</span><span class="o">=</span><span class="n">downsample_config</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">metrics</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Median correlation:&quot;</span><span class="p">,</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;median_score&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">({</span>
+    <span class="s2">&quot;median_correlation&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;median_score&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;nan&quot;</span><span class="p">)),</span>
+    <span class="s2">&quot;n_significant&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;n_significant&quot;</span><span class="p">),</span>
+<span class="p">})</span>
 </pre></div>
 </div>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<p>Before running this example, you need to:</p>
+<ol class="arabic">
+<li><p><strong>Download the LeBel assembly</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gdown<span class="w"> </span>1q-XLPjvhd8doGFhYBmeOkcenS9Y59x64
+</pre></div>
+</div>
+</li>
+<li><p><strong>Install LITcoder</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:GT-LIT-Lab/litcoder_core.git
+<span class="nb">cd</span><span class="w"> </span>litcoder_core
+conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>litcoder<span class="w"> </span>-y<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12.8
+conda<span class="w"> </span>activate<span class="w"> </span>litcoder
+conda<span class="w"> </span>install<span class="w"> </span>pip
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
 </section>
 
 
@@ -135,7 +184,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="architecture.html" class="btn btn-neutral float-right" title="Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="assemblies_tutorial.html" class="btn btn-neutral float-right" title="Understanding Assemblies in LITcoder" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

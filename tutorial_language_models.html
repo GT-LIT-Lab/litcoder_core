@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Language Model Features Tutorial &mdash; litcoder 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Speech Features Tutorial" href="tutorial_speech.html" />
+    <link rel="prev" title="Word Rate Feature Tutorial" href="tutorial_wordrate.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            litcoder
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="assemblies_tutorial.html">Understanding Assemblies in LITcoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_wordrate.html">Word Rate Feature Tutorial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Language Model Features Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-components">Key Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-by-step-tutorial">Step-by-Step Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#understanding-language-model-features">Understanding Language Model Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-parameters">Key Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-options">Model Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#caching-system">Caching System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#training-configuration">Training Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_speech.html">Speech Features Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_embeddings.html">Static Embeddings Tutorial</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assemblies.html">Assemblies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trainer.html">Trainer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting &amp; Logging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">litcoder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Language Model Features Tutorial</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorial_language_models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="language-model-features-tutorial">
+<h1>Language Model Features Tutorial<a class="headerlink" href="#language-model-features-tutorial" title="Link to this heading"></a></h1>
+<p>This tutorial shows how to train encoding models using language model features with the LeBel assembly. Language model features capture rich semantic representations from transformer models.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Language model features extract high-dimensional representations from transformer models like GPT-2. These features capture semantic, syntactic, and contextual information that can be highly predictive of brain activity.</p>
+</section>
+<section id="key-components">
+<h2>Key Components<a class="headerlink" href="#key-components" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Assembly</strong>: Pre-packaged LeBel assembly containing brain data and stimuli</p></li>
+<li><p><strong>Feature Extractor</strong>: LanguageModelFeatureExtractor using transformer models</p></li>
+<li><p><strong>Caching</strong>: Multi-layer activation caching for efficient training</p></li>
+<li><p><strong>Downsampler</strong>: Aligns word-level features with brain data timing</p></li>
+<li><p><strong>Model</strong>: Ridge regression with nested cross-validation</p></li>
+<li><p><strong>Trainer</strong>: AbstractTrainer orchestrates the entire pipeline</p></li>
+</ul>
+</section>
+<section id="step-by-step-tutorial">
+<h2>Step-by-Step Tutorial<a class="headerlink" href="#step-by-step-tutorial" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Load the Assembly</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">encoding.assembly.assembly_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_assembly</span>
+
+<span class="c1"># Load the pre-packaged LeBel assembly</span>
+<span class="n">assembly</span> <span class="o">=</span> <span class="n">load_assembly</span><span class="p">(</span><span class="s2">&quot;assembly_lebel_uts03.pkl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Create Language Model Feature Extractor</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">encoding.features.factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">FeatureExtractorFactory</span>
+
+<span class="n">extractor</span> <span class="o">=</span> <span class="n">FeatureExtractorFactory</span><span class="o">.</span><span class="n">create_extractor</span><span class="p">(</span>
+    <span class="n">modality</span><span class="o">=</span><span class="s2">&quot;language_model&quot;</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;gpt2-small&quot;</span><span class="p">,</span>  <span class="c1"># Can be changed to other models</span>
+    <span class="n">config</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="s2">&quot;gpt2-small&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;layer_idx&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>  <span class="c1"># Layer to extract features from</span>
+        <span class="s2">&quot;last_token&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Use last token only</span>
+        <span class="s2">&quot;lookback&quot;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>  <span class="c1"># Context lookback</span>
+        <span class="s2">&quot;context_type&quot;</span><span class="p">:</span> <span class="s2">&quot;fullcontext&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">cache_dir</span><span class="o">=</span><span class="s2">&quot;cache_language_model&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Set Up Downsampler and Model</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">encoding.downsample.downsampling</span><span class="w"> </span><span class="kn">import</span> <span class="n">Downsampler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">encoding.models.nested_cv</span><span class="w"> </span><span class="kn">import</span> <span class="n">NestedCVModel</span>
+
+<span class="n">downsampler</span> <span class="o">=</span> <span class="n">Downsampler</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">NestedCVModel</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;ridge_regression&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Configure Training Parameters</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># FIR delays for hemodynamic response modeling</span>
+<span class="n">fir_delays</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+
+<span class="c1"># Trimming configuration for LeBel dataset</span>
+<span class="n">trimming_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;train_features_start&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s2">&quot;train_features_end&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span>
+    <span class="s2">&quot;train_targets_start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;train_targets_end&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;test_features_start&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="s2">&quot;test_features_end&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span>
+    <span class="s2">&quot;test_targets_start&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
+    <span class="s2">&quot;test_targets_end&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">downsample_config</span> <span class="o">=</span> <span class="p">{}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Create and Run Trainer</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">encoding.trainer</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractTrainer</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">AbstractTrainer</span><span class="p">(</span>
+    <span class="n">assembly</span><span class="o">=</span><span class="n">assembly</span><span class="p">,</span>
+    <span class="n">feature_extractors</span><span class="o">=</span><span class="p">[</span><span class="n">extractor</span><span class="p">],</span>
+    <span class="n">downsampler</span><span class="o">=</span><span class="n">downsampler</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">fir_delays</span><span class="o">=</span><span class="n">fir_delays</span><span class="p">,</span>
+    <span class="n">trimming_config</span><span class="o">=</span><span class="n">trimming_config</span><span class="p">,</span>
+    <span class="n">use_train_test_split</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">logger_backend</span><span class="o">=</span><span class="s2">&quot;wandb&quot;</span><span class="p">,</span>
+    <span class="n">wandb_project_name</span><span class="o">=</span><span class="s2">&quot;lebel-language-model&quot;</span><span class="p">,</span>
+    <span class="n">dataset_type</span><span class="o">=</span><span class="s2">&quot;lebel&quot;</span><span class="p">,</span>
+    <span class="n">results_dir</span><span class="o">=</span><span class="s2">&quot;results&quot;</span><span class="p">,</span>
+    <span class="n">layer_idx</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>  <span class="c1"># Pass layer_idx to trainer</span>
+    <span class="n">lookback</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>  <span class="c1"># Pass lookback to trainer</span>
+<span class="p">)</span>
+
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Median correlation: </span><span class="si">{</span><span class="n">metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;median_score&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">))</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="understanding-language-model-features">
+<h2>Understanding Language Model Features<a class="headerlink" href="#understanding-language-model-features" title="Link to this heading"></a></h2>
+<p>Language model features are extracted by:</p>
+<ol class="arabic simple">
+<li><p><strong>Text Processing</strong>: Each stimulus text is tokenized and processed</p></li>
+<li><p><strong>Transformer Forward Pass</strong>: The model processes the text through all layers</p></li>
+<li><p><strong>Feature Extraction</strong>: Features are extracted from the specified layer</p></li>
+<li><p><strong>Caching</strong>: Multi-layer activations are cached for efficiency</p></li>
+<li><p><strong>Downsampling</strong>: Features are aligned with brain data timing</p></li>
+</ol>
+</section>
+<section id="key-parameters">
+<h2>Key Parameters<a class="headerlink" href="#key-parameters" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>modality</strong>: “language_model” - specifies the feature type</p></li>
+<li><p><strong>model_name</strong>: “gpt2-small” - transformer model to use</p></li>
+<li><p><strong>layer_idx</strong>: 9 - which layer to extract features from</p></li>
+<li><p><strong>last_token</strong>: True - use only the last token’s features (we recommend using this)</p></li>
+<li><p><strong>lookback</strong>: 256 - context window size</p></li>
+<li><p><strong>context_type</strong>: “fullcontext” - how to handle context</p></li>
+<li><p><strong>cache_dir</strong>: “cache_language_model” - directory for caching</p></li>
+</ul>
+</section>
+<section id="model-options">
+<h2>Model Options<a class="headerlink" href="#model-options" title="Link to this heading"></a></h2>
+<p>Supported models include:
+- <strong>gpt2-small</strong>: Fast, good baseline
+- <strong>gpt2-medium</strong>: Better performance, slower
+- <strong>facebook/opt-125m</strong>: Alternative architecture
+- <strong>Other TransformerLens models</strong>: Any compatible model from <a class="reference external" href="https://transformerlensorg.github.io/TransformerLens/generated/model_properties_table.html">TransformerLens model properties table</a></p>
+</section>
+<section id="caching-system">
+<h2>Caching System<a class="headerlink" href="#caching-system" title="Link to this heading"></a></h2>
+<p>The language model extractor uses a sophisticated caching system:</p>
+<ol class="arabic simple">
+<li><p><strong>Multi-layer caching</strong>: All layers are cached together</p></li>
+<li><p><strong>Lazy loading</strong>: Layers are loaded on-demand</p></li>
+<li><p><strong>Efficient storage</strong>: Compressed storage of activations</p></li>
+<li><p><strong>Cache validation</strong>: Ensures cached data matches parameters</p></li>
+</ol>
+<p>This makes it efficient to experiment with different layers without recomputing features.</p>
+</section>
+<section id="training-configuration">
+<h2>Training Configuration<a class="headerlink" href="#training-configuration" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>fir_delays</strong>: [1, 2, 3, 4] - temporal delays for hemodynamic response</p></li>
+<li><p><strong>trimming_config</strong>: LeBel-specific trimming to avoid boundary effects</p></li>
+<li><p><strong>layer_idx</strong>: 9 - which layer to use for training</p></li>
+<li><p><strong>lookback</strong>: 256 - context window size</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial_wordrate.html" class="btn btn-neutral float-left" title="Word Rate Feature Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_speech.html" class="btn btn-neutral float-right" title="Speech Features Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Taha Binhuraib, Ruimin Gao, Anya Ivanova.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

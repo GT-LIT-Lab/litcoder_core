@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Understanding Assemblies in LITcoder &mdash; litcoder 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Word Rate Feature Tutorial" href="tutorial_wordrate.html" />
+    <link rel="prev" title="Quickstart" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            litcoder
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Understanding Assemblies in LITcoder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-an-assembly">What is an Assembly?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assembly-structure">Assembly Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-assemblies">Working with Assemblies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-assembly-methods">Key Assembly Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exploring-assembly-contents">Exploring Assembly Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#understanding-the-data-flow">Understanding the Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assembly-attributes">Assembly Attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-story-data">Working with Story Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-assemblies-in-training">Using Assemblies in Training</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_wordrate.html">Word Rate Feature Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_language_models.html">Language Model Features Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_speech.html">Speech Features Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_embeddings.html">Static Embeddings Tutorial</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assemblies.html">Assemblies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trainer.html">Trainer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting &amp; Logging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">litcoder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Understanding Assemblies in LITcoder</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/assemblies_tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="understanding-assemblies-in-litcoder">
+<h1>Understanding Assemblies in LITcoder<a class="headerlink" href="#understanding-assemblies-in-litcoder" title="Link to this heading"></a></h1>
+<p>An <strong>Assembly</strong> is the core data structure in LITcoder that organizes and manages brain imaging data, stimuli, and metadata for encoding model training. It’s the foundation that everything else builds upon.</p>
+<section id="what-is-an-assembly">
+<h2>What is an Assembly?<a class="headerlink" href="#what-is-an-assembly" title="Link to this heading"></a></h2>
+<p>An assembly is a structured container that holds all the data needed to train encoding models:</p>
+<ul class="simple">
+<li><p><strong>Brain Data</strong>: Recordings aligned with stimuli</p></li>
+<li><p><strong>Stimuli</strong>: Text or audio stimuli presented during the experiment</p></li>
+<li><p><strong>Timing Information</strong>: Precise timing of when each stimulus was presented</p></li>
+<li><p><strong>Split Indices</strong>: Maps each word/stimulus to its corresponding TR (time repetition)</p></li>
+<li><p><strong>Metadata</strong>: Story names, subject information, and experimental parameters</p></li>
+</ul>
+<p>Think of an assembly as a well-organized database that contains everything needed to train a brain encoding model.</p>
+</section>
+<section id="assembly-structure">
+<h2>Assembly Structure<a class="headerlink" href="#assembly-structure" title="Link to this heading"></a></h2>
+<p>An assembly contains several key components:</p>
+<dl class="simple">
+<dt><strong>Stories</strong>: List of story/run names</dt><dd><p>Each story represents a continuous experimental session (e.g., listening to a story)</p>
+</dd>
+<dt><strong>Story Data</strong>: Dictionary mapping story names to their data</dt><dd><p>Contains brain data, stimuli, timing, and metadata for each story</p>
+</dd>
+<dt><strong>Timing Information</strong>:</dt><dd><ul class="simple">
+<li><p><cite>tr_times</cite>: When each TR (time repetition) occurred</p></li>
+<li><p><cite>data_times</cite>: Precise timing for each data point (word-level)</p></li>
+<li><p><cite>split_indices</cite>: Maps each word to its corresponding TR</p></li>
+</ul>
+</dd>
+<dt><strong>Brain Data</strong>:</dt><dd><ul class="simple">
+<li><p>Preprocessed fMRI data aligned with stimuli</p></li>
+<li><p>Shape: (n_timepoints, n_voxels/vertices)</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="working-with-assemblies">
+<h2>Working with Assemblies<a class="headerlink" href="#working-with-assemblies" title="Link to this heading"></a></h2>
+<p>Let’s explore how to work with assemblies using the LeBel assembly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">encoding.assembly.assembly_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_assembly</span>
+
+<span class="c1"># Load the pre-packaged LeBel assembly</span>
+<span class="n">assembly</span> <span class="o">=</span> <span class="n">load_assembly</span><span class="p">(</span><span class="s2">&quot;assembly_lebel_uts03.pkl&quot;</span><span class="p">)</span>
+
+<span class="c1"># Basic information</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Assembly shape: </span><span class="si">{</span><span class="n">assembly</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stories: </span><span class="si">{</span><span class="n">assembly</span><span class="o">.</span><span class="n">stories</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Validation method: </span><span class="si">{</span><span class="n">assembly</span><span class="o">.</span><span class="n">get_validation_method</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="key-assembly-methods">
+<h2>Key Assembly Methods<a class="headerlink" href="#key-assembly-methods" title="Link to this heading"></a></h2>
+<p>Here are the most important methods for working with assemblies:</p>
+<p><strong>Data Access</strong>:
+- <cite>get_stimuli()</cite>: Get text stimuli for each story
+- <cite>get_brain_data()</cite>: Get brain data for each story
+- <cite>get_split_indices()</cite>: Get word-to-TR mapping
+- <cite>get_tr_times()</cite>: Get TR timing information
+- <cite>get_data_times()</cite>: Get precise word-level timing</p>
+<p><strong>Story-Specific Data</strong>:
+- <cite>get_temporal_baseline(story_name)</cite>: Get temporal baseline features
+- <cite>get_audio_path()</cite>: Get audio file paths (for speech models)
+- <cite>get_words()</cite>: Get individual words for each story
+- <cite>get_word_rates()</cite>: Get pre-computed word rates</p>
+<p><strong>Metadata</strong>:
+- <cite>get_validation_method()</cite>: Get validation strategy (“inner” or “outer”)
+- <cite>stories</cite>: List of story names
+- <cite>story_data</cite>: Dictionary of story-specific data</p>
+</section>
+<section id="exploring-assembly-contents">
+<h2>Exploring Assembly Contents<a class="headerlink" href="#exploring-assembly-contents" title="Link to this heading"></a></h2>
+<p>Let’s examine what’s inside an assembly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load assembly</span>
+<span class="n">assembly</span> <span class="o">=</span> <span class="n">load_assembly</span><span class="p">(</span><span class="s2">&quot;assembly_lebel_uts03.pkl&quot;</span><span class="p">)</span>
+
+<span class="c1"># Basic information</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Assembly Overview ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total presentations: </span><span class="si">{</span><span class="n">assembly</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of voxels/vertices: </span><span class="si">{</span><span class="n">assembly</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stories: </span><span class="si">{</span><span class="n">assembly</span><span class="o">.</span><span class="n">stories</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Validation method: </span><span class="si">{</span><span class="n">assembly</span><span class="o">.</span><span class="n">get_validation_method</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Explore each story</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Story Details ===&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">story</span> <span class="ow">in</span> <span class="n">assembly</span><span class="o">.</span><span class="n">stories</span><span class="p">:</span>
+    <span class="n">story_data</span> <span class="o">=</span> <span class="n">assembly</span><span class="o">.</span><span class="n">story_data</span><span class="p">[</span><span class="n">story</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Story: </span><span class="si">{</span><span class="n">story</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Brain data shape: </span><span class="si">{</span><span class="n">story_data</span><span class="o">.</span><span class="n">brain_data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Number of stimuli: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">story_data</span><span class="o">.</span><span class="n">stimuli</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Split indices: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">story_data</span><span class="o">.</span><span class="n">split_indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> words&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  TR times: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">story_data</span><span class="o">.</span><span class="n">tr_times</span><span class="p">)</span><span class="si">}</span><span class="s2"> TRs&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Data times: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">story_data</span><span class="o">.</span><span class="n">data_times</span><span class="p">)</span><span class="si">}</span><span class="s2"> words&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Show first few stimuli</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  First 3 stimuli: </span><span class="si">{</span><span class="n">story_data</span><span class="o">.</span><span class="n">stimuli</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Show split indices (these map words to TRs)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  First 10 split indices: </span><span class="si">{</span><span class="n">story_data</span><span class="o">.</span><span class="n">split_indices</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Last 10 split indices: </span><span class="si">{</span><span class="n">story_data</span><span class="o">.</span><span class="n">split_indices</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="understanding-the-data-flow">
+<h2>Understanding the Data Flow<a class="headerlink" href="#understanding-the-data-flow" title="Link to this heading"></a></h2>
+<p>Here’s how data flows through an assembly:</p>
+<ol class="arabic simple">
+<li><p><strong>Stimuli Extraction</strong>: Text is processed into features (embeddings, word rates, etc.)</p></li>
+<li><p><strong>Timing Alignment</strong>: Features are aligned with brain data using timing information</p></li>
+<li><p><strong>Downsampling</strong>: High-resolution features are downsampled to match brain data TR</p></li>
+<li><p><strong>FIR Delays</strong>: Temporal delays are applied to account for hemodynamic response</p></li>
+<li><p><strong>Train/Test Split</strong>: Data is split for proper evaluation</p></li>
+</ol>
+</section>
+<section id="assembly-attributes">
+<h2>Assembly Attributes<a class="headerlink" href="#assembly-attributes" title="Link to this heading"></a></h2>
+<p>An assembly has several key attributes:</p>
+<dl class="simple">
+<dt><strong>Shape</strong>: (n_presentations, n_voxels/vertices)</dt><dd><p>Total number of timepoints and brain regions</p>
+</dd>
+<dt><strong>Stories</strong>: List of story names</dt><dd><p>Each story represents a continuous experimental session</p>
+</dd>
+<dt><strong>Story Data</strong>: Dictionary of story-specific data</dt><dd><p>Contains all the data for each story</p>
+</dd>
+<dt><strong>Coordinates</strong>: Metadata about presentations</dt><dd><p>Story IDs, stimulus IDs, etc.</p>
+</dd>
+<dt><strong>Validation Method</strong>: “inner” or “outer”</dt><dd><p>How the assembly handles train/test splits</p>
+</dd>
+</dl>
+</section>
+<section id="working-with-story-data">
+<h2>Working with Story Data<a class="headerlink" href="#working-with-story-data" title="Link to this heading"></a></h2>
+<p>Each story in an assembly contains:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get data for a specific story</span>
+<span class="n">story_name</span> <span class="o">=</span> <span class="n">assembly</span><span class="o">.</span><span class="n">stories</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">story_data</span> <span class="o">=</span> <span class="n">assembly</span><span class="o">.</span><span class="n">story_data</span><span class="p">[</span><span class="n">story_name</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Story: </span><span class="si">{</span><span class="n">story_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Brain data: </span><span class="si">{</span><span class="n">story_data</span><span class="o">.</span><span class="n">brain_data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Stimuli: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">story_data</span><span class="o">.</span><span class="n">stimuli</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Split indices: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">story_data</span><span class="o">.</span><span class="n">split_indices</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  TR times: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">story_data</span><span class="o">.</span><span class="n">tr_times</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Data times: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">story_data</span><span class="o">.</span><span class="n">data_times</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Access specific data</span>
+<span class="n">brain_data</span> <span class="o">=</span> <span class="n">story_data</span><span class="o">.</span><span class="n">brain_data</span>
+<span class="n">stimuli</span> <span class="o">=</span> <span class="n">story_data</span><span class="o">.</span><span class="n">stimuli</span>
+<span class="n">split_indices</span> <span class="o">=</span> <span class="n">story_data</span><span class="o">.</span><span class="n">split_indices</span>
+<span class="n">tr_times</span> <span class="o">=</span> <span class="n">story_data</span><span class="o">.</span><span class="n">tr_times</span>
+<span class="n">data_times</span> <span class="o">=</span> <span class="n">story_data</span><span class="o">.</span><span class="n">data_times</span>
+</pre></div>
+</div>
+</section>
+<section id="using-assemblies-in-training">
+<h2>Using Assemblies in Training<a class="headerlink" href="#using-assemblies-in-training" title="Link to this heading"></a></h2>
+<p>Here’s how assemblies are used in the training pipeline:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">encoding.assembly.assembly_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_assembly</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">encoding.features.factory</span><span class="w"> </span><span class="kn">import</span> <span class="n">FeatureExtractorFactory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">encoding.downsample.downsampling</span><span class="w"> </span><span class="kn">import</span> <span class="n">Downsampler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">encoding.models.nested_cv</span><span class="w"> </span><span class="kn">import</span> <span class="n">NestedCVModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">encoding.trainer</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractTrainer</span>
+
+<span class="c1"># 1. Load assembly</span>
+<span class="n">assembly</span> <span class="o">=</span> <span class="n">load_assembly</span><span class="p">(</span><span class="s2">&quot;assembly_lebel_uts03.pkl&quot;</span><span class="p">)</span>
+
+<span class="c1"># 2. Create feature extractor</span>
+<span class="n">extractor</span> <span class="o">=</span> <span class="n">FeatureExtractorFactory</span><span class="o">.</span><span class="n">create_extractor</span><span class="p">(</span>
+    <span class="n">modality</span><span class="o">=</span><span class="s2">&quot;wordrate&quot;</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;wordrate&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="p">{},</span>
+    <span class="n">cache_dir</span><span class="o">=</span><span class="s2">&quot;cache&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># 3. Set up other components</span>
+<span class="n">downsampler</span> <span class="o">=</span> <span class="n">Downsampler</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">NestedCVModel</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;ridge_regression&quot;</span><span class="p">)</span>
+
+<span class="c1"># 4. Configure training parameters</span>
+<span class="n">fir_delays</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">trimming_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;train_features_start&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s2">&quot;train_features_end&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span>
+    <span class="s2">&quot;train_targets_start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;train_targets_end&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;test_features_start&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="s2">&quot;test_features_end&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span>
+    <span class="s2">&quot;test_targets_start&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
+    <span class="s2">&quot;test_targets_end&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># 5. Create trainer</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">AbstractTrainer</span><span class="p">(</span>
+    <span class="n">assembly</span><span class="o">=</span><span class="n">assembly</span><span class="p">,</span>
+    <span class="n">feature_extractors</span><span class="o">=</span><span class="p">[</span><span class="n">extractor</span><span class="p">],</span>
+    <span class="n">downsampler</span><span class="o">=</span><span class="n">downsampler</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">fir_delays</span><span class="o">=</span><span class="n">fir_delays</span><span class="p">,</span>
+    <span class="n">trimming_config</span><span class="o">=</span><span class="n">trimming_config</span><span class="p">,</span>
+    <span class="n">use_train_test_split</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">logger_backend</span><span class="o">=</span><span class="s2">&quot;wandb&quot;</span><span class="p">,</span>
+    <span class="n">wandb_project_name</span><span class="o">=</span><span class="s2">&quot;lebel-tutorial&quot;</span><span class="p">,</span>
+    <span class="n">dataset_type</span><span class="o">=</span><span class="s2">&quot;lebel&quot;</span><span class="p">,</span>
+    <span class="n">results_dir</span><span class="o">=</span><span class="s2">&quot;results&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># 6. Train the model</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Median correlation: </span><span class="si">{</span><span class="n">metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;median_score&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">))</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This understanding of assemblies is crucial for effectively using LITcoder. The assembly serves as the foundation for all encoding model training, providing the structured interface between your experimental data and the machine learning pipeline.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_wordrate.html" class="btn btn-neutral float-right" title="Word Rate Feature Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Taha Binhuraib, Ruimin Gao, Anya Ivanova.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
