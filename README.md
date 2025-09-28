@@ -106,6 +106,17 @@ To download the assembly, use the following google drive link: [assembly_lebel_u
 We recommend using this first for testing the installation. More details on how to create your own assembly will be added soon.
 We will also be moving to a more scalable hosting solution for the assemblies in the very near future.
 
+### 2.1) Tutorials for other modalities
+
+- [Language Models](https://litcoder-brain.github.io/language-models.html)
+- [Embeddings](https://litcoder-brain.github.io/embeddings.html)
+- [Speech](https://litcoder-brain.github.io/speech.html)
+
+Tutorials from documentation:
+- [Language Models](https://gt-lit-lab.github.io/litcoder_core/tutorial_language_models.html)
+- [Embeddings](https://gt-lit-lab.github.io/litcoder_core/tutorial_embeddings.html)
+- [Speech](https://gt-lit-lab.github.io/litcoder_core/tutorial_speech.html)
+
 ## 3) Quick tutorial:
 
 This library uses the same core modules across datasets, here's an example for Narratives:
