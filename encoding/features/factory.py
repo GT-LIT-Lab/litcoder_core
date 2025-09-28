@@ -53,7 +53,15 @@ class FeatureExtractorFactory:
         if "model_name" not in config:
             config["model_name"] = model_name
 
-        extractor = extractor_class(config)
+        # TODO: Change later to use **config for all extractors. But for now, only speech will use **config
+        # ideally, they should all use a config, and that config should be a class.
+        if modality == "language_model":
+            extractor = extractor_class(config)
+        elif modality == "speech":
+            extractor = extractor_class(**config)
+        else:
+            extractor = extractor_class(config)
+
         print(f"this is the config: {config}")
 
         # Add caching capability
