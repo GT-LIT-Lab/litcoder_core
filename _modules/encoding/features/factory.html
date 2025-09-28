@@ -144,7 +144,15 @@
         <span class="k">if</span> <span class="s2">&quot;model_name&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
             <span class="n">config</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_name</span>
 
-        <span class="n">extractor</span> <span class="o">=</span> <span class="n">extractor_class</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="c1"># TODO: Change later to use **config for all extractors. But for now, only speech will use **config</span>
+        <span class="c1"># ideally, they should all use a config, and that config should be a class.</span>
+        <span class="k">if</span> <span class="n">modality</span> <span class="o">==</span> <span class="s2">&quot;language_model&quot;</span><span class="p">:</span>
+            <span class="n">extractor</span> <span class="o">=</span> <span class="n">extractor_class</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">modality</span> <span class="o">==</span> <span class="s2">&quot;speech&quot;</span><span class="p">:</span>
+            <span class="n">extractor</span> <span class="o">=</span> <span class="n">extractor_class</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">extractor</span> <span class="o">=</span> <span class="n">extractor_class</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;this is the config: </span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Add caching capability</span>
