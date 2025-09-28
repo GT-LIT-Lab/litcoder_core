@@ -28,7 +28,8 @@ audio_files/
 # anything that has cache
 *cache*/
 *Cache*/
-
+_autosummary/
+tutorial_scripts/
 sdist/
 var/
 wheels/
