@@ -119,6 +119,7 @@ class SpeechFeatureExtractor:
         return x[0, -1, :] if self.pool == "last" else x[0].mean(dim=0)
 
     def _load_and_resample(self, wav_path: str) -> torch.Tensor:
+        torchaudio = import_torchaudio_gracefully()
         wav, sr = torchaudio.load(wav_path)
         if wav.shape[0] != 1:
             wav = wav.mean(0, keepdim=True)
