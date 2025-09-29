@@ -3,6 +3,8 @@ from typing import List, Union, Optional
 import logging
 from encoding.models.ridge_utils import svd_wrapper, mult_diag, z_score
 
+# this is a torch implementation of the following: https://github.com/HuthLab/encoding-model-scaling-laws/blob/main/ridge_utils/ridge.py
+
 
 def ridge_torch(
     Rstim: torch.Tensor,
