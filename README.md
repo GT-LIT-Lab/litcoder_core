@@ -225,7 +225,7 @@ metrics, weights, best_alphas = fit_nested_cv(
     normalize_targets=False,
 )
 ```
-> **Note:** In order to run the code above, you need to have the data downloaded and preprocessed. See the Litcoder_brain for more details(coming soon(09/29/2025)).
+> **Note:** In order to run the code above, you need to have the data downloaded and preprocessed. See the [Litcoder_release](https://github.com/GT-LIT-Lab/litcoder_release) for more details.
 
 
 ## 4) Tutorials
@@ -250,7 +250,7 @@ This repository is under active development. We will continue to add many featur
 
 - [ ] **Add comprehensive test suite** - Unit tests, integration tests, and validation tests
 - [ ] **Migrate to PyPI** - Package distribution and easy installation via `pip`
-- [ ] **Google colab quickstart tutorial** - Coming soon(09/29/2025)
+- [ ] **Google colab quickstart tutorial**
 
 ### 🔮 Future Enhancements
 
