@@ -1,4 +1,6 @@
-"""Interpolation utilities for downsampling continuous data."""
+"""Interpolation utilities for downsampling continuous data.
+Original code with some modifications from https://github.com/HuthLab/encoding-model-scaling-laws
+"""
 
 import numpy as np
 import logging
