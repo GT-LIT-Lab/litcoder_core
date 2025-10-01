@@ -67,6 +67,7 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
         context_type: str = "fullcontext",
         correlation_length: int = 100,
         generate_temporal_baseline: bool = False,
+        audio_path: Optional[str] = None,
     ) -> SimpleNeuroidAssembly:
         """Generate assembly for a subject by processing all stories.
 
@@ -84,7 +85,6 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
 
         # Process each story
         for story in self.stories:
-            audio_path = f"{self.data_dir}/audio_files/{story}.wav"
             story_data = self._process_single_story(
                 subject,
                 story,
@@ -109,7 +109,6 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
         self,
         subject: str,
         story_name: str,
-        volume_path: str,
         correlation_length: int = 100,
         generate_temporal_baseline: bool = False,
         audio_path: Optional[str] = None,
