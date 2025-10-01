@@ -131,8 +131,8 @@ class BaseAssemblyGenerator(ABC):
         total_len = len(transcript["word_orig"])
         ds_data = transcript["word_orig"].astype(str)
         stimuli = []
-        print(f"this is the lookback: {lookback}")
-        print(f"heloo")
+        #print(f"this is the lookback: {lookback}")
+        #print(f"heloo")
 
         for i, w in enumerate(ds_data):
             if w != "":
