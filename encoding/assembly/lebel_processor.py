@@ -27,10 +27,12 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
         mask_path: Optional[str] = None,
         analysis_mask_path: Optional[str] = None,
         tokenizer: Optional[GPT2Tokenizer] = None,
+        stories: Optional[List[str]] = None,
+        **kwargs,
     ):
         super().__init__(data_dir, dataset_type, tr, use_volume, mask_path, tokenizer)
         self.analysis_mask = analysis_mask_path
-        self.stories = [
+        self.stories = stories if stories is not None else [
             "adollshouse",
             "adventuresinsayingyes",
             "alternateithicatom",
@@ -115,6 +117,7 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
         """Process a single story and return its data using a specified context type.
 
         Args:
+            subject: Subject identifier
             story_name: Name of the story being processed
             wordseq: Word sequence data for the story
             brain_data: Neural activity data for the story

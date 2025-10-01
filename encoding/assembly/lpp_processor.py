@@ -22,6 +22,7 @@ class LPPAssemblyGenerator(BaseAssemblyGenerator):
         mask_path: Optional[str] = None,
         analysis_mask_path: Optional[str] = None,
         tokenizer: Optional[GPT2Tokenizer] = None,
+        **kwargs,
     ):
         super().__init__(data_dir, dataset_type, tr, use_volume, mask_path, tokenizer)
         self.analysis_mask = analysis_mask_path
