@@ -109,4 +109,5 @@ class AssemblyGenerator:
             context_type,
             correlation_length,
             generate_temporal_baseline,
+            **kwargs
         )

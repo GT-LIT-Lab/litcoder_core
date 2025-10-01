@@ -68,6 +68,7 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
         correlation_length: int = 100,
         generate_temporal_baseline: bool = False,
         audio_path: Optional[str] = None,
+        **kwargs,
     ) -> SimpleNeuroidAssembly:
         """Generate assembly for a subject by processing all stories.
 
@@ -84,14 +85,15 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
         self.generate_temporal_baseline = generate_temporal_baseline
 
         # Process each story
+        #TODO: fix this to load big files once outside loop
         for story in self.stories:
             story_data = self._process_single_story(
-                subject,
-                story,
-                None,
-                correlation_length,
-                generate_temporal_baseline,
+                subject=subject,
+                story_name=story,
+                correlation_length=correlation_length,
+                generate_temporal_baseline=generate_temporal_baseline,
                 audio_path=audio_path,
+                brain_resp_file= kwargs.get('brain_resp_file', 'brain_resp_huge.pkl'),
             )
             story_data_list.append(story_data)
 
@@ -112,6 +114,7 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
         correlation_length: int = 100,
         generate_temporal_baseline: bool = False,
         audio_path: Optional[str] = None,
+        brain_resp_file: Optional[str] = None,
     ) -> StoryData:
         """Process a single story and return its data using a specified context type.
 
@@ -127,12 +130,10 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
         Returns:
             StoryData object containing processed story information
         """
-        if self.use_volume:
-            with open(f"{self.data_dir}/noslice_sub-{subject}_story_data.pkl", "rb") as f:
-                resp_dict = pickle.load(f)
-        else:
-            with open(f"{self.data_dir}/noslice_sub-{subject}_story_data_surface.pkl", "rb") as f:
-                resp_dict = pickle.load(f)
+        #TODO: Unify file structure for LITcoder
+        with open(f"{self.data_dir}/{subject}/{brain_resp_file}", "rb") as f:
+            resp_dict = pickle.load(f)
+        
         brain_data = resp_dict.get(story_name)
 
         transcript, split_indices, tr_times, data_times, _ = self.process_transcript(

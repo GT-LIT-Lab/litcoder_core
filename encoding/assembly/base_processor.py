@@ -339,6 +339,8 @@ class BaseAssemblyGenerator(ABC):
         self, data_dir: str, story_name: str
     ) -> Tuple[pd.DataFrame, List[int], np.ndarray, np.ndarray]:
         """Process transcript data and generate split indices and timing information."""
+        #TODO: Unify file structure for LITcoder
+        #TODO: make it so stimulis data is in a dictionary instead of a list, or make file store modular
         # read pickle file
         with open(os.path.join(data_dir, f"{self.dataset_type}_data.pkl"), "rb") as f:
             data = pickle.load(f)
