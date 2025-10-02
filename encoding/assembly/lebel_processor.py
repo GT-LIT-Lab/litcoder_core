@@ -94,6 +94,7 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
                 generate_temporal_baseline=generate_temporal_baseline,
                 audio_path=audio_path,
                 brain_resp_file= kwargs.get('brain_resp_file', 'brain_resp_huge.pkl'),
+                transcript_file= kwargs.get('transcript_file', 'lebel_transcripts.pkl' )
             )
             story_data_list.append(story_data)
 
@@ -115,6 +116,7 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
         generate_temporal_baseline: bool = False,
         audio_path: Optional[str] = None,
         brain_resp_file: Optional[str] = None,
+        transcript_file: Optional[str] = None
     ) -> StoryData:
         """Process a single story and return its data using a specified context type.
 
@@ -136,10 +138,12 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
         
         brain_data = resp_dict.get(story_name)
 
+
         transcript, split_indices, tr_times, data_times, _ = self.process_transcript(
-            self.data_dir,
-            story_name
-        )
+            self.data_dir, 
+            transcript_file,
+            story_name)
+        
         stimuli = self.generate_stimuli_with_context(transcript, self.lookback)
 
         if self.analysis_mask is not None:
