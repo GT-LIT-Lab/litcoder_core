@@ -4,7 +4,7 @@ from datetime import datetime
 from litcoder_core.encoding.features.base import BaseFeatureExtractor
 from litcoder_core.encoding.features.language_model import LanguageModelFeatureExtractor
 from litcoder_core.encoding.features.speech_model import SpeechFeatureExtractor
-from litcoder_core.encoding.features.simple_features import WordRateFeatureExtractor
+from litcoder_core.encoding.features.lowlevel_features import WordRateFeatureExtractor
 from litcoder_core.encoding.features.embeddings import StaticEmbeddingFeatureExtractor
 from ..utils import ActivationCache, SpeechActivationCache
 
