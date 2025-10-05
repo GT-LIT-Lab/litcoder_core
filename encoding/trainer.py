@@ -39,6 +39,7 @@ class AbstractTrainer:
         # Logging parameters
         logger_backend: str = "wandb",
         wandb_project_name: str = "abstract-trainer",
+        wandb_mode: Optional[str] = None,
         results_dir: str = "results",
         run_name: Optional[str] = None,
         # Processing parameters
@@ -61,6 +62,7 @@ class AbstractTrainer:
             dataset_type: Dataset type for caching
             logger_backend: "wandb" or "tensorboard"
             wandb_project_name: Project name for wandb
+            wandb_mode: Mode for wandb ('online' or 'offline'). 
             results_dir: Directory for results
             run_name: Custom run name
             downsample_config: Downsampling parameters
@@ -91,7 +93,7 @@ class AbstractTrainer:
             self.stories_to_process = story_selection
         
         # Setup logging
-        self.setup_logger(logger_backend, wandb_project_name, results_dir, run_name)
+        self.setup_logger(logger_backend, wandb_project_name, wandb_mode, results_dir, run_name)
         self.model_saver = ModelSaver(base_dir=results_dir)
         self.brain_plotter = BrainPlotter(self.experiment_logger)
         
@@ -104,18 +106,47 @@ class AbstractTrainer:
         logger.info(f"FIR delays: {self.fir_delays}")
         logger.info(f"Use train/test split: {self.use_train_test_split}")
     
-    def setup_logger(self, backend: str, project_name: str, results_dir: str, run_name: Optional[str]):
-        """Setup experiment logger."""
+    def setup_logger(self, backend: str, project_name: str, wandb_mode: Optional[str], results_dir: str, run_name: Optional[str]):
+        """Setup experiment logger.
+
+        Args: 
+            backend (str): logger backend to use ('wandb' or 'tensorboard')
+            project_name (str): project name
+            wandb_mode (str): Mode for wandb ('online' or 'offline'). 
+                    If None, reads from WANDB_MODE env var (defaults to 'offline')
+            results_dir (str): Directory to store the results
+            run_name (str): custom run_name
+        
+        """
         if run_name is None:
             run_name = f"abstract-trainer-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
         
         if backend == "wandb":
             try:
                 import wandb
-                wandb.init(project=project_name, name=run_name)
+                import os
+            
+                if wandb_mode is None:
+                    wandb_mode = os.environ.get('WANDB_MODE', 'offline')
+                
+                os.environ['WANDB_MODE'] = wandb_mode
+                
+
+                if wandb_mode == "offline":
+                    wandb_dir = f'{results_dir}/wandb'
+                    tmpdir = os.environ.get('TMPDIR', results_dir)
+                    wandb_cache_dir = f'{tmpdir}/wandb_cache'
+                    os.makedirs(wandb_dir, exist_ok=True)
+                    os.makedirs(wandb_cache_dir, exist_ok=True)
+                    os.environ.setdefault('WANDB_DIR', wandb_dir)
+                    os.environ.setdefault('WANDB_CACHE_DIR', wandb_cache_dir)
+
+                wandb.init(project=project_name, name=run_name,start_method="thread")
                 self.experiment_logger = WandBLogger()
+
             except ImportError as e:
                 raise ImportError("wandb not installed. Install with: pip install wandb") from e
+            
         elif backend == "tensorboard":
             run_dir = f"{results_dir}/runs/{run_name}"
             self.experiment_logger = TensorBoardLogger(log_dir=run_dir)
@@ -328,7 +359,10 @@ class AbstractTrainer:
         if "correlations" in metrics and "significant_mask" in metrics:
             correlations = np.array(metrics["correlations"])
             significant_mask = np.array(metrics["significant_mask"], dtype=bool)
-            self.brain_plotter.log_plots(correlations, significant_mask, "", False)
+            self.brain_plotter.log_plots(correlations = correlations, 
+                                         significant_mask=significant_mask, 
+                                         prefix="", 
+                                         is_volume=self.assembly.is_volume)
         
         if "best_alpha" in metrics:
             self.experiment_logger.log_scalar("best_alpha", float(metrics["best_alpha"]))
