@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 class SimpleNeuroidAssembly:
     """Simple alternative to NeuroidAssembly that doesn't require brainio and Xarray."""
 
-    def __init__(self, story_data_list: List["StoryData"], validation_method: str):
+    def __init__(self, story_data_list: List["StoryData"], validation_method: str,is_volume:bool):
         """Initialize assembly with story-level separation.
 
         Args:
@@ -19,6 +19,7 @@ class SimpleNeuroidAssembly:
         self.stories = [story.name for story in story_data_list]
         self.story_data = {story.name: story for story in story_data_list}
         self.validation_method = validation_method
+        self.is_volume = is_volume
         # Store combined data for backward compatibility
         self.data = np.vstack([story.brain_data for story in story_data_list])
 

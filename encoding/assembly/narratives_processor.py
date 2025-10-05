@@ -72,7 +72,7 @@ class NarrativesAssemblyGenerator(BaseAssemblyGenerator):
             story_data_list.append(story_data)
 
         # Create assembly with story-level separation
-        return SimpleNeuroidAssembly(story_data_list, validation_method="inner")
+        return SimpleNeuroidAssembly(story_data_list, validation_method="inner",is_volume=self.use_volume)
 
     def _discover_stories(self, subject_dir: Path) -> List[Dict[str, str]]:
         """Discover all stories for a subject from the directory structure."""

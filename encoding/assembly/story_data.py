@@ -11,6 +11,7 @@ class StoryData:
     Attributes:
         name (str): Name identifier for the story/run
         brain_data (np.ndarray): Brain activation data, shape (n_timepoints, n_voxels/vertices)
+        is_volume (bool): true if brain data is volume data, false if surface
         stimuli (List[str]): List of text stimuli corresponding to each timepoint
         split_indices (List[int]): Indices marking TR boundaries in the data
         tr_times (np.ndarray): Array of TR timestamps

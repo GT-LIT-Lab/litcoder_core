@@ -87,6 +87,8 @@ class NestedCVModel(BasePredictivityModel):
                 device = "mps:0"
             elif torch.cuda.is_available():
                 device = "cuda"
+            else: #fallback
+                device = "cpu"
         else:
              device = "cpu"
         logger.info(f"Using device: {device}")

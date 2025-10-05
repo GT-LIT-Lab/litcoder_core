@@ -99,7 +99,7 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
             story_data_list.append(story_data)
 
         # Create assembly with story-level separation
-        return SimpleNeuroidAssembly(story_data_list, validation_method="outer")
+        return SimpleNeuroidAssembly(story_data_list, validation_method="outer",is_volume=self.use_volume)
 
     def _discover_stories(self, subject_dir: Path) -> List[Dict[str, str]]:
         """Discover all stories for a subject from the directory structure.
