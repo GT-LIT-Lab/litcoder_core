@@ -27,6 +27,7 @@ class AssemblyGenerator:
         mask_path: Optional[str] = None,
         analysis_mask_path: Optional[str] = None,
         tokenizer: Optional[GPT2Tokenizer] = None,
+        **kwargs,
     ) -> BaseAssemblyGenerator:
         """Create a dataset-specific assembly generator.
 
@@ -56,6 +57,7 @@ class AssemblyGenerator:
             mask_path,
             analysis_mask_path,
             tokenizer,
+            **kwargs
         )
 
     @staticmethod
@@ -72,6 +74,7 @@ class AssemblyGenerator:
         generate_temporal_baseline: bool = False,
         analysis_mask_path: Optional[str] = None,
         tokenizer: Optional[GPT2Tokenizer] = None,
+        **kwargs,
     ) -> SimpleNeuroidAssembly:
         """Generate assembly for a subject using the appropriate dataset processor.
 
@@ -98,6 +101,7 @@ class AssemblyGenerator:
             mask_path,
             analysis_mask_path,
             tokenizer,
+            **kwargs
         )
         return generator.generate_assembly(
             subject,
@@ -105,4 +109,5 @@ class AssemblyGenerator:
             context_type,
             correlation_length,
             generate_temporal_baseline,
+            **kwargs
         )

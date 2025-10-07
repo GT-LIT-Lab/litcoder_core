@@ -84,7 +84,7 @@ def sincinterp2D(
     return newdata
 
 
-def lanczosinterp2D(data, oldtime, newtime, window=3, cutoff_mult=1.0, rectify=False):
+def lanczosinterp2D(data, oldtime, newtime, window=3, cutoff_mult=1.0, rectify=False,**kwags):
     """Interpolates the columns of [data], assuming that the i'th row of data corresponds to
     oldtime(i). A new matrix with the same number of columns and a number of rows given
     by the length of [newtime] is returned.

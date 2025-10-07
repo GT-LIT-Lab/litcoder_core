@@ -1,11 +1,11 @@
 from typing import Dict, Any, Union, Optional, Tuple
 import numpy as np
 from datetime import datetime
-from .base import BaseFeatureExtractor
-from .language_model import LanguageModelFeatureExtractor
-from .speech_model import SpeechFeatureExtractor
-from .simple_features import WordRateFeatureExtractor
-from .embeddings import StaticEmbeddingFeatureExtractor
+from litcoder_core.encoding.features.base import BaseFeatureExtractor
+from litcoder_core.encoding.features.language_model import LanguageModelFeatureExtractor
+from litcoder_core.encoding.features.speech_model import SpeechFeatureExtractor
+from litcoder_core.encoding.features.lowlevel_features import WordRateFeatureExtractor
+from litcoder_core.encoding.features.embeddings import StaticEmbeddingFeatureExtractor
 from ..utils import ActivationCache, SpeechActivationCache
 
 

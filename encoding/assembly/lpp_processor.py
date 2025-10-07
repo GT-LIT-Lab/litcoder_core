@@ -22,6 +22,7 @@ class LPPAssemblyGenerator(BaseAssemblyGenerator):
         mask_path: Optional[str] = None,
         analysis_mask_path: Optional[str] = None,
         tokenizer: Optional[GPT2Tokenizer] = None,
+        **kwargs,
     ):
         super().__init__(data_dir, dataset_type, tr, use_volume, mask_path, tokenizer)
         self.analysis_mask = analysis_mask_path
@@ -69,7 +70,7 @@ class LPPAssemblyGenerator(BaseAssemblyGenerator):
             story_data_list.append(story_data)
 
         # Create assembly with run-level separation
-        return SimpleNeuroidAssembly(story_data_list, validation_method="inner")
+        return SimpleNeuroidAssembly(story_data_list, validation_method="inner",is_volume=self.use_volume)
 
     def _discover_stories(
         self, subject_dir: Path, subject: str

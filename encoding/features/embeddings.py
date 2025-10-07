@@ -48,7 +48,7 @@ class StaticEmbeddingFeatureExtractor(BaseFeatureExtractor):
       - tokenizer_pattern (str): ONLY used if input is a single string.
             Default r"[A-Za-z0-9_']+" (keeps underscores)
 
-        Note: This has also been tested with ENG1000. You just have to convert it to the .kv format first. We'll provide a scrip to do that!
+        Note: This has also been tested with ENG1000. You just have to convert it to the .kv format first. We'll provide a script to do that!
     """
 
     def __init__(self, config: Dict[str, Any]):

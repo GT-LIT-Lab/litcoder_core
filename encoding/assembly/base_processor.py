@@ -131,8 +131,8 @@ class BaseAssemblyGenerator(ABC):
         total_len = len(transcript["word_orig"])
         ds_data = transcript["word_orig"].astype(str)
         stimuli = []
-        print(f"this is the lookback: {lookback}")
-        print(f"heloo")
+        #print(f"this is the lookback: {lookback}")
+        #print(f"heloo")
 
         for i, w in enumerate(ds_data):
             if w != "":
@@ -336,15 +336,22 @@ class BaseAssemblyGenerator(ABC):
         return np.array(word_rates)  # Shape: (n_trs, 1)
     
     def process_transcript(
-        self, data_dir: str, story_name: str
+        self,
+        data_dir: str,
+        transcript_file: str,
+        story_name: str,
     ) -> Tuple[pd.DataFrame, List[int], np.ndarray, np.ndarray]:
         """Process transcript data and generate split indices and timing information."""
+        #TODO: Unify file structure for LITcoder
+        #TODO: make it so stimulis data is in a dictionary instead of a list, or make file store modular
         # read pickle file
-        with open(os.path.join(data_dir, f"{self.dataset_type}_data.pkl"), "rb") as f:
+        with open(os.path.join(data_dir, f"transcripts/{transcript_file}"), "rb") as f:
             data = pickle.load(f)
 
         # this is a list, iterate over it and find the story_name
-        story = next((s for s in data if s.get("story_name") == story_name), None)
+        #story = next((s for s in data if s.get("story_name") == story_name), None)
+        story = data[story_name]
+
         if story is None:
             available = [s.get("story_name") for s in data]
             raise ValueError(

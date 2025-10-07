@@ -143,7 +143,7 @@ class SincDownsampler(BaseDownsampler):
         self, data: np.ndarray, data_times: np.ndarray, tr_times: np.ndarray, **kwargs
     ) -> np.ndarray:
         """Downsample using sinc interpolation."""
-        return interpdata.sincinterp2D(data, data_times, tr_times, **kwargs)
+        return interpdata.sincinterp2D(data=data, oldtime=data_times, newtime=tr_times, **kwargs)
 
 
 class LanczosDownsampler(BaseDownsampler):
@@ -154,7 +154,7 @@ class LanczosDownsampler(BaseDownsampler):
     ) -> np.ndarray:
         """Downsample using Lanczos interpolation."""
         # log the kwargs
-        return interpdata.lanczosinterp2D(data, data_times, tr_times, **kwargs)
+        return interpdata.lanczosinterp2D(data=data, oldtime=data_times, newtime=tr_times, **kwargs)
 
 
 class GaborDownsampler(BaseDownsampler):
