@@ -1,19 +1,17 @@
 """Assembly generator for brain data processing and organization."""
 
-from dataclasses import dataclass
-from typing import List, Optional, Tuple
-import numpy as np
-import pandas as pd
-import nibabel as nib
-from nilearn import surface, datasets
+from __future__ import annotations 
+from typing import Optional, TYPE_CHECKING
+
 from .base_processor import BaseAssemblyGenerator
 from .narratives_processor import NarrativesAssemblyGenerator
-
 from .lpp_processor import LPPAssemblyGenerator
 from .lebel_processor import LebelAssemblyGenerator
-from .assemblies import SimpleNeuroidAssembly
-from transformers import GPT2Tokenizer
 
+
+if TYPE_CHECKING:
+    from transformers import GPT2Tokenizer
+    from .assemblies import SimpleNeuroidAssembly
 
 class AssemblyGenerator:
     """Factory class for creating dataset-specific assembly generators."""

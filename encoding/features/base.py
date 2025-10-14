@@ -1,7 +1,10 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional, Union
-import numpy as np
-from pathlib import Path
+from typing import Any, Dict, List, Union, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import numpy as np
+
 
 
 class BaseFeatureExtractor(ABC):

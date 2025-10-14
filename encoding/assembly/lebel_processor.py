@@ -1,18 +1,16 @@
 """Processor for the Lebel dataset."""
 
-import sys
-import pickle
-
-from typing import Dict, List, Optional, Tuple, Any
-import numpy as np
-import pandas as pd
+from __future__ import annotations
+from typing import Dict, List, Optional, TYPE_CHECKING
 from pathlib import Path
-
-from .base_processor import BaseAssemblyGenerator, StoryData
-from .assemblies import SimpleNeuroidAssembly
-from transformers import GPT2Tokenizer
 import logging
 
+from .base_processor import BaseAssemblyGenerator
+
+if TYPE_CHECKING:
+    from transformers import GPT2Tokenizer
+    from .base_processor import StoryData
+    from .assemblies import SimpleNeuroidAssembly
 
 
 class LebelAssemblyGenerator(BaseAssemblyGenerator):
@@ -78,6 +76,8 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
             context_type: Type of context to use ("fullcontext", "nocontext", or "halfcontext")
             correlation_length: How far temporal correlation extends (in stimulus units)
         """
+        from .assemblies import SimpleNeuroidAssembly
+
         story_data_list = []
         self.lookback = lookback
         self.context_type = context_type
@@ -132,6 +132,9 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
         Returns:
             StoryData object containing processed story information
         """
+        from .story_data import StoryData
+        import pickle
+        
         #TODO: Unify file structure for LITcoder
         with open(f"{self.data_dir}/{subject}/{brain_resp_file}", "rb") as f:
             resp_dict = pickle.load(f)
@@ -160,6 +163,7 @@ class LebelAssemblyGenerator(BaseAssemblyGenerator):
         # make a transcript that has the word_orig, word_times, and word_times_tr
         
         word_rates = self.compute_word_rate_features(transcript, tr_times)
+
 
         return StoryData(
             name=story_name,

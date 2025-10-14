@@ -1,9 +1,11 @@
-from typing import Any, Dict, List, Union, Optional
-import numpy as np
-import torch
-from transformer_lens import HookedTransformer
+from __future__ import annotations
+from typing import Any, Dict, List, Union, Optional, TYPE_CHECKING
 
 from .base import BaseFeatureExtractor
+
+if TYPE_CHECKING:
+    import numpy as np
+    
 
 
 class LanguageModelFeatureExtractor(BaseFeatureExtractor):
@@ -33,14 +35,19 @@ class LanguageModelFeatureExtractor(BaseFeatureExtractor):
         self.last_token = config.get("last_token", True)
         self.context_type = config.get("context_type", "fullcontext")
 
-        if torch.backends.mps.is_available():
-            self.device = "mps"
-        elif torch.cuda.is_available():
-            self.device = "cuda"
-        else:
+        try:
+            import torch
+            if torch.backends.mps.is_available():
+                self.device = "mps"
+            elif torch.cuda.is_available():
+                self.device = "cuda"
+            else:
+                self.device = "cpu"
+        except ImportError:
             self.device = "cpu"
 
         # Initialize model
+        from transformer_lens import HookedTransformer
         self.model = HookedTransformer.from_pretrained(
             self.model_name, device=self.device
         )
@@ -59,6 +66,8 @@ class LanguageModelFeatureExtractor(BaseFeatureExtractor):
         Returns:
             np.ndarray: Extracted features
         """
+        import numpy as np
+
         if layer_idx is None:
             layer_idx = self.layer_idx
 
@@ -92,6 +101,8 @@ class LanguageModelFeatureExtractor(BaseFeatureExtractor):
         Returns:
             Dict[int, np.ndarray]: Dictionary mapping layer indices to features
         """
+        import numpy as np
+        
         if isinstance(stimuli, str):
             stimuli = [stimuli]
 
@@ -129,6 +140,9 @@ class LanguageModelFeatureExtractor(BaseFeatureExtractor):
         Returns:
             np.ndarray: Extracted features for the text
         """
+        import numpy as np
+        import torch
+
         # if the text is '' then return np.zeros(dimensions of the features)
         if text == "":
             return np.zeros((self.model.cfg.d_model)).reshape(
@@ -167,6 +181,9 @@ class LanguageModelFeatureExtractor(BaseFeatureExtractor):
         Returns:
             Dict[int, np.ndarray]: Dictionary mapping layer indices to features
         """
+        import numpy as np
+        import torch
+
         # if the text is '' then return zeros for all layers
         if text == "":
             empty_features = np.zeros((self.model.cfg.d_model)).reshape(

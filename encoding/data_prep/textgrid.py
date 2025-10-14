@@ -84,8 +84,6 @@ For each tier:
 """
 
 # needs more cleanup, subclassing, epydoc docstrings
-
-import sys
 import re
 
 TEXTTIER = "TextTier"

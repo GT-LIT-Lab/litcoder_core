@@ -1,17 +1,14 @@
 """Utils for preparing datasets before using litcode. 
 Adapted from Huth ridge utils. 
 TODO: Add proper citation"""
-from typing import List, Tuple, Union
+from __future__ import annotations
+from typing import List, Tuple, Union, TYPE_CHECKING
 from pathlib import Path
-import json
-import numpy as np
-from .textgrid import TextGrid
-import pickle
-import h5py
+
+if TYPE_CHECKING:
+    import numpy as np
 
 DEFAULT_BAD_WORDS = frozenset(["sentence_start", "sentence_end", "br", "lg", "ls", "ns", "sp"])
-
-
 
 
 ##########Transcript Preprocessing Utils###########
@@ -31,6 +28,8 @@ def create_lebel_transcripts( story_list: List[str],
         respdict_path: Path to the response dictionary JSON file
         output_dir: Directory to save the generated transcripts
     """
+    import json
+    import pickle
 
     text_grids = _load_textgrids(story_list, textgrids_dir)
     with open(respdict_path, "r") as f:
@@ -55,6 +54,7 @@ def _load_textgrids(stories: List[str], textgrids_dir: Union[str, Path]) -> dict
     Returns:
         Dictionary mapping story names to their corresponding TextGrid objects
     """
+    from .textgrid import TextGrid
 
     grids = {}
     for story in stories:
@@ -76,6 +76,8 @@ def _simulate_trtimes(stories: List[str], respdict: dict, tr: float = 2.0, start
     Returns:
         Dictionary mapping story names to their simulated TR times
     """
+    import numpy as np
+
     tr_times = {}
     for story in stories:
         resp_length = respdict.get(story, 0)
@@ -111,6 +113,7 @@ def _process_single_story(processed_transcript: List[Tuple],
     Returns:   
         Tuple containing processed story information
     """
+    import numpy as np
     
     data_entries = list(zip(*processed_transcript))[2]
     if isinstance(data_entries[0], str):
@@ -127,6 +130,8 @@ def _process_single_story(processed_transcript: List[Tuple],
     split_inds = [(word_starts<(t+tr)).sum() for t in tr_times][:-1]
     return {"words": data, "split_indices": split_inds, "data_times":word_avgtimes,"tr_times": tr_midpoints}
 
+##########BrainData Preprocessing Utils###########
+
 def create_brain_response_dict(story_list: List[str], 
                        resp_data_dir: Union[str, Path],
                        output_dir: Union[str, Path],
@@ -140,6 +145,8 @@ def create_brain_response_dict(story_list: List[str],
         output_path: Path to save the generated brain response dictionary
         file_name: Name of the output file
     """
+    import pickle
+    import h5py
 
     brain_responses = {}
     for story in story_list:

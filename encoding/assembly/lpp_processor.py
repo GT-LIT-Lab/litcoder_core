@@ -1,13 +1,15 @@
-from typing import Optional, List, Dict
+"""Processor for the little prince dataset."""
+
+from __future__ import annotations
+from typing import Optional, List, Dict, TYPE_CHECKING
 from pathlib import Path
-import glob
-import nibabel as nib
+
 from .base_processor import BaseAssemblyGenerator
-from .assemblies import SimpleNeuroidAssembly
-from transformers import GPT2Tokenizer
-from .story_data import StoryData
-from ..brain_projection.simple_cache import get_surface_cache
-import logging
+
+if TYPE_CHECKING:
+    from transformers import GPT2Tokenizer
+    from .assemblies import SimpleNeuroidAssembly
+    from .story_data import StoryData
 
 
 class LPPAssemblyGenerator(BaseAssemblyGenerator):
@@ -43,6 +45,8 @@ class LPPAssemblyGenerator(BaseAssemblyGenerator):
             context_type: Type of context to use ("fullcontext", "nocontext", or "halfcontext")
             correlation_length: How far temporal correlation extends (in stimulus units)
         """
+        from .assemblies import SimpleNeuroidAssembly
+
         subject_dir = self.data_dir / subject
         if not subject_dir.exists():
             raise FileNotFoundError(f"Subject directory not found: {subject_dir}")
@@ -124,6 +128,9 @@ class LPPAssemblyGenerator(BaseAssemblyGenerator):
         Returns:
             StoryData object containing processed run information
         """
+        from .story_data import StoryData
+        from ..brain_projection.simple_cache import get_surface_cache
+
         # Try to get cached brain data first
         surface_cache = get_surface_cache()
         cached_data = surface_cache.get(subject, volume_path)
@@ -132,6 +139,7 @@ class LPPAssemblyGenerator(BaseAssemblyGenerator):
             print(f"Using cached brain data for subject {subject}")
             brain_data = cached_data
         else:
+            import nibabel as nib
             # Load volume data and process
             volume_data = nib.load(volume_path)
 

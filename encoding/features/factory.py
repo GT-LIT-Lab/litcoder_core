@@ -1,23 +1,36 @@
-from typing import Dict, Any, Union, Optional, Tuple
-import numpy as np
+from __future__ import annotations
+from typing import Dict, Any, Union, Tuple, TYPE_CHECKING
 from datetime import datetime
-from litcoder_core.encoding.features.base import BaseFeatureExtractor
-from litcoder_core.encoding.features.language_model import LanguageModelFeatureExtractor
-from litcoder_core.encoding.features.speech_model import SpeechFeatureExtractor
-from litcoder_core.encoding.features.lowlevel_features import WordRateFeatureExtractor
-from litcoder_core.encoding.features.embeddings import StaticEmbeddingFeatureExtractor
-from ..utils import ActivationCache, SpeechActivationCache
+
+if TYPE_CHECKING:
+    import numpy as np
+    from litcoder_core.encoding.features.base import BaseFeatureExtractor
+    from litcoder_core.encoding.features.language_model import LanguageModelFeatureExtractor
+    from litcoder_core.encoding.features.speech_model import SpeechFeatureExtractor
+    from litcoder_core.encoding.features.lowlevel_features import WordRateFeatureExtractor
+    from litcoder_core.encoding.features.embeddings import StaticEmbeddingFeatureExtractor
+
 
 
 class FeatureExtractorFactory:
     """Factory class for creating feature extractors with caching support."""
 
     _extractors = {
-        "language_model": LanguageModelFeatureExtractor,
-        "speech": SpeechFeatureExtractor,
-        "wordrate": WordRateFeatureExtractor,
-        "embeddings": StaticEmbeddingFeatureExtractor,
+        "language_model": "litcoder_core.encoding.features.language_model.LanguageModelFeatureExtractor",
+        "speech": "litcoder_core.encoding.features.speech_model.SpeechFeatureExtractor",
+        "wordrate": "litcoder_core.encoding.features.lowlevel_features.WordRateFeatureExtractor",
+        "embeddings": "litcoder_core.encoding.features.embeddings.StaticEmbeddingFeatureExtractor",
     }
+
+    @classmethod
+    def _lazy_import_extractor(cls, modality: str):
+        """Lazy import the extractor class only when needed."""
+        import_path = cls._extractors[modality]
+        module_path, class_name = import_path.rsplit(".", 1)
+        
+        import importlib
+        module = importlib.import_module(module_path)
+        return getattr(module, class_name)
 
     @classmethod
     def create_extractor(
@@ -47,7 +60,7 @@ class FeatureExtractorFactory:
                 f"Supported modalities: {list(cls._extractors.keys())}"
             )
 
-        extractor_class = cls._extractors[modality]
+        extractor_class = cls._lazy_import_extractor(modality)
 
         # Add model_name to config if not present
         if "model_name" not in config:
@@ -68,8 +81,10 @@ class FeatureExtractorFactory:
         if modality in ["language_model", "speech"]:
             extractor.cache_dir = cache_dir
             if modality == "speech":
+                from ..utils import SpeechActivationCache
                 extractor.speech_cache = SpeechActivationCache(cache_dir=cache_dir)
             else:
+                from ..utils import ActivationCache
                 extractor.activation_cache = ActivationCache(cache_dir=cache_dir)
 
         return extractor
@@ -121,16 +136,14 @@ class FeatureExtractorFactory:
     @classmethod
     def _get_modality_from_extractor(cls, extractor: BaseFeatureExtractor) -> str:
         """Get modality from extractor instance."""
-        if isinstance(extractor, LanguageModelFeatureExtractor):
-            return "language_model"
-        elif isinstance(extractor, SpeechFeatureExtractor):
-            return "speech"
-        elif isinstance(extractor, WordRateFeatureExtractor):
-            return "wordrate"
-        elif isinstance(extractor, StaticEmbeddingFeatureExtractor):
-            return "embeddings"
-        else:
-            raise ValueError(f"Unknown extractor type: {type(extractor)}")
+        extractor_type = type(extractor).__name__
+        
+        for modality, import_path in cls._extractors.items():
+            class_name = import_path.rsplit(".", 1)[1]
+            if extractor_type == class_name:
+                return modality
+        
+        raise ValueError(f"Unknown extractor type: {type(extractor)}")
 
     @classmethod
     def _extract_language_model_features(

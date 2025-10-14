@@ -1,7 +1,9 @@
+from __future__ import annotations
+from typing import Dict, Optional, TYPE_CHECKING
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional, Union
-import numpy as np
-from pathlib import Path
+
+if TYPE_CHECKING:
+    import numpy as np
 
 
 class BasePredictivityModel(ABC):

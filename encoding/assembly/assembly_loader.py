@@ -3,12 +3,12 @@
 Simple assembly loader with pickle support.(TODO: add support for other formats like online?)
 """
 
-import pickle
 import logging
-from typing import Optional
+from typing import TYPE_CHECKING
 from pathlib import Path
 
-from .assemblies import SimpleNeuroidAssembly
+if TYPE_CHECKING:
+    from .assemblies import SimpleNeuroidAssembly
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +45,8 @@ class AssemblyLoader:
     
     @validate_assembly
     def load(self, filepath: str) -> SimpleNeuroidAssembly:
+        import pickle
+
         """Load assembly from pickle file."""
         filepath = Path(filepath)
         
@@ -62,6 +64,8 @@ class AssemblyLoader:
             raise AssemblyLoaderError(f"Failed to load assembly from {filepath}: {e}")
     
     def save(self, assembly: SimpleNeuroidAssembly, filepath: str) -> None:
+        import pickle
+        
         """Save assembly to pickle file."""
         filepath = Path(filepath)
         filepath.parent.mkdir(parents=True, exist_ok=True)

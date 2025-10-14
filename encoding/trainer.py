@@ -141,7 +141,11 @@ class AbstractTrainer:
                     os.environ.setdefault('WANDB_DIR', wandb_dir)
                     os.environ.setdefault('WANDB_CACHE_DIR', wandb_cache_dir)
 
-                wandb.init(project=project_name, name=run_name,start_method="thread")
+                wandb.init(
+                    project=project_name,
+                    name=run_name,
+                    mode=wandb_mode  # Add this line - explicitly pass the mode
+                )
                 self.experiment_logger = WandBLogger()
 
             except ImportError as e:

@@ -1,6 +1,11 @@
-from typing import Dict, Any
-import numpy as np
+from __future__ import annotations
+from typing import Dict, Any, TYPE_CHECKING
+
 from .base import BaseFeatureExtractor
+
+if TYPE_CHECKING:
+    import numpy as np
+    
 
 
 class WordRateFeatureExtractor(BaseFeatureExtractor):

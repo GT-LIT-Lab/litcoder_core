@@ -1,6 +1,9 @@
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import List, Optional
-import numpy as np
+from typing import List, Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import numpy as np
 
 
 @dataclass

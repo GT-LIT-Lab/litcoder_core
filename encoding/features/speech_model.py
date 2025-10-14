@@ -1,10 +1,10 @@
 from __future__ import annotations
-
-import torch
-import numpy as np
-from typing import Dict, Tuple, Optional
-from transformers import AutoModel, AutoProcessor, AutoFeatureExtractor    
+from typing import Dict, Tuple, Optional, TYPE_CHECKING
 from tqdm import tqdm
+
+if TYPE_CHECKING:
+    import torch
+    import numpy as np
 
 def import_torchaudio_gracefully():
     try:
@@ -15,6 +15,7 @@ def import_torchaudio_gracefully():
 
 def auto_device(fn):
     def wrapper(self, *args, **kwargs):
+        import torch
         with torch.no_grad():
             return fn(self, *args, **kwargs)
 
@@ -52,15 +53,23 @@ class SpeechFeatureExtractor:
         self.context_size = float(context_size)
         self.layer = layer
         self.pool = pool
-        self.device = device or (
-            "cuda"
-            if torch.cuda.is_available()
-            else ("mps" if torch.backends.mps.is_available() else "cpu")
-        )
+
+        try:
+            import torch
+            if torch.backends.mps.is_available():
+                self.device = "mps"
+            elif torch.cuda.is_available():
+                self.device = "cuda"
+            else:
+                self.device = "cpu"
+        except ImportError:
+            self.device = "cpu"
+
         self.target_sample_rate = int(target_sample_rate)
         self.disable_tqdm = disable_tqdm
 
         # Load base model
+        from transformers import AutoModel
         self.model = AutoModel.from_pretrained(model_name).to(self.device)
         self.model.eval()
 
@@ -68,15 +77,18 @@ class SpeechFeatureExtractor:
         self.model_type = getattr(self.model.config, "model_type", "").lower()
         if self.model_type == "whisper":
             # Whisper expects log-mel features
+            from transformers import AutoFeatureExtractor   
             self.feature_extractor = AutoFeatureExtractor.from_pretrained(model_name)
             self._forward_key = "input_features"
             self._encoder = self.model.get_encoder()  # use encoder only
         else:
             # HuBERT/Wav2Vec2 expect raw PCM
             try:
+                from transformers import  AutoProcessor   
                 proc = AutoProcessor.from_pretrained(model_name)
                 self.feature_extractor = getattr(proc, "feature_extractor", proc)
             except Exception:
+                from transformers import AutoFeatureExtractor   
                 self.feature_extractor = AutoFeatureExtractor.from_pretrained(
                     model_name
                 )
@@ -138,6 +150,7 @@ class SpeechFeatureExtractor:
           features: [n_chunks, D]
           times:    [n_chunks]
         """
+        import numpy as np
         layer = self.layer if layer is None else layer
 
         wav = self._load_and_resample(wav_path)
@@ -195,6 +208,8 @@ class SpeechFeatureExtractor:
           layer_to_features: {layer_idx: [n_chunks, D]}
           times:             [n_chunks]
         """
+        import numpy as np
+
         wav = self._load_and_resample(wav_path)
         chunk_samples = int(self.chunk_size * self.target_sample_rate)
         context_samples = int(self.context_size * self.target_sample_rate)

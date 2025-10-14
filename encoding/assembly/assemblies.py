@@ -1,7 +1,9 @@
 """Simple alternative to NeuroidAssembly that doesn't require brainio and Xarray."""
 
+from __future__ import annotations 
 import numpy as np
 from typing import Dict, List, TYPE_CHECKING
+
 
 if TYPE_CHECKING:
     from .assembly_generator import StoryData

@@ -1,7 +1,9 @@
-import numpy as np
+from __future__ import annotations
+from typing import Iterable, Optional, TYPE_CHECKING
 from dataclasses import dataclass
-from typing import Iterable, Optional
 
+if TYPE_CHECKING:
+    import numpy as np
 
 @dataclass
 class FIR:
@@ -25,6 +27,7 @@ class FIR:
     def make_delayed(
         stim: np.ndarray, delays: Iterable[int], circpad: bool = False
     ) -> np.ndarray:
+        import numpy as np
         nt, ndim = stim.shape
         dstims = []
         for d in delays:

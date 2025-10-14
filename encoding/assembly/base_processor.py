@@ -1,23 +1,17 @@
 """Base classes for dataset processing."""
 
+from __future__ import annotations 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
 import os
-from typing import Dict, List, Optional, Tuple, Union
-import numpy as np
-import pandas as pd
+from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
 from pathlib import Path
-import nibabel as nib
-from nilearn import surface, datasets
-from transformers import GPT2Tokenizer
-from ..brain_projection import (
-    SurfaceProcessor,
-    VolumeProcessor,
-)
-from .story_data import StoryData
-from .assemblies import SimpleNeuroidAssembly
-import pickle
-import logging
+
+if TYPE_CHECKING:
+    import numpy as np
+    import pandas as pd
+    from transformers import GPT2Tokenizer
+    from .story_data import StoryData
+    from .assemblies import SimpleNeuroidAssembly
 
 
 class BaseAssemblyGenerator(ABC):
@@ -36,17 +30,23 @@ class BaseAssemblyGenerator(ABC):
         self.data_dir = Path(data_dir)
         self.tr = tr
         self.analysis_mask = analysis_mask_path
-        self.tokenizer = (
-            tokenizer
-            if tokenizer is not None
-            else GPT2Tokenizer.from_pretrained("gpt2")
-        )
         self.dataset_type = dataset_type
-
-        self.brain_processor = (
-            VolumeProcessor(mask_path=mask_path) if use_volume else SurfaceProcessor()
-        )
         self.use_volume = use_volume
+
+        if tokenizer is not None:
+            self.tokenizer = tokenizer
+        else:
+            from transformers import GPT2Tokenizer
+            self.tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+        
+        
+        if use_volume:
+            from ..brain_projection import VolumeProcessor
+            self.brain_processor = VolumeProcessor(mask_path=mask_path)
+        else:
+            from ..brain_projection import SurfaceProcessor
+            self.brain_processor = SurfaceProcessor()
+        
 
     @abstractmethod
     def generate_assembly(
@@ -235,6 +235,8 @@ class BaseAssemblyGenerator(ABC):
                 - masked_brain_data: (n_timepoints, n_masked_voxels)
                 - mask_indices: indices of masked voxels in original space
         """
+        import numpy as np
+
         if self.analysis_mask is None:
             return brain_data, np.arange(brain_data.shape[1])
 
@@ -295,6 +297,8 @@ class BaseAssemblyGenerator(ABC):
         Returns:
             Array of shape (n_stimuli, d_model) with temporal baseline features
         """
+        import numpy as np
+
         # Create autocorrelation matrix with exponential decay
         autocorr_matrix = np.zeros((n_stimuli, n_stimuli))
 
@@ -312,6 +316,8 @@ class BaseAssemblyGenerator(ABC):
     def compute_word_rate_features(
         self, transcript: pd.DataFrame, tr_times: np.ndarray
     ) -> np.ndarray:
+        import numpy as np
+
         """Compute word rate by counting words per TR bin."""
         word_rates = []
         transcript["word_orig"] = transcript["word_orig"].astype(str)
@@ -342,9 +348,12 @@ class BaseAssemblyGenerator(ABC):
         story_name: str,
     ) -> Tuple[pd.DataFrame, List[int], np.ndarray, np.ndarray]:
         """Process transcript data and generate split indices and timing information."""
+        import pickle
+        import pandas as pd
+
         #TODO: Unify file structure for LITcoder
         #TODO: make it so stimulis data is in a dictionary instead of a list, or make file store modular
-        # read pickle file
+        # read pickle file    
         with open(os.path.join(data_dir, f"transcripts/{transcript_file}"), "rb") as f:
             data = pickle.load(f)
 

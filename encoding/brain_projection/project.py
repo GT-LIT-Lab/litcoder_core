@@ -1,9 +1,11 @@
-import nibabel as nib
-import numpy as np
-from nilearn import surface, datasets
-from typing import Optional, Union
+from __future__ import annotations
+from typing import Optional, Union, TYPE_CHECKING
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+
+if TYPE_CHECKING:
+    import numpy as np
+
 
 
 @dataclass
@@ -49,6 +51,7 @@ class SurfaceProcessor(BaseBrainDataProcessor):
     """
 
     def __init__(self, mesh: str = "fsaverage5"):
+        from nilearn import surface, datasets
         self.fsaverage = datasets.fetch_surf_fsaverage(mesh=mesh)
         self.mesh_left = surface.load_surf_mesh(self.fsaverage["pial_left"])
         self.mesh_right = surface.load_surf_mesh(self.fsaverage["pial_right"])
@@ -57,6 +60,10 @@ class SurfaceProcessor(BaseBrainDataProcessor):
         self, volume_data: np.ndarray, affine: np.ndarray
     ) -> SurfaceData:
         """Project volumetric data to surface for both hemispheres."""
+        import nibabel as nib
+        from nilearn import surface
+        import numpy as np
+
         n_timepoints = volume_data.shape[3]
         n_vertices_left = self.mesh_left[0].shape[0]
         n_vertices_right = self.mesh_right[0].shape[0]
@@ -85,6 +92,7 @@ class VolumeProcessor(BaseBrainDataProcessor):
         print(f"Initializing VolumeProcessor with mask_path: {mask_path}")
         self.mask = None
         if mask_path is not None:
+            import nibabel as nib
             mask_img = nib.load(mask_path)
             self.mask = mask_img.get_fdata().astype(bool)  # 3D boolean mask
 
@@ -100,6 +108,8 @@ class VolumeProcessor(BaseBrainDataProcessor):
         Returns:
             VolumeData object containing masked and flattened data
         """
+        import numpy as np
+
         n_timepoints = volume_data.shape[3]
 
         if self.mask is not None:

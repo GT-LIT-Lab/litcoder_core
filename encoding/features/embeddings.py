@@ -1,12 +1,14 @@
 # encoding/features/static_token_extractor.py
-from typing import Any, Dict, List, Union, Optional, Iterable
+from __future__ import annotations
+from typing import Any, Dict, List, Union, Optional, Iterable, TYPE_CHECKING
 import os
 import re
-import numpy as np
-import torch
-from gensim.models import KeyedVectors
 
 from .base import BaseFeatureExtractor
+
+if TYPE_CHECKING:
+    import numpy as np
+    from gensim.models import KeyedVectors
 
 try:
     from tqdm.auto import tqdm
@@ -77,11 +79,15 @@ class StaticEmbeddingFeatureExtractor(BaseFeatureExtractor):
         self._force_binary: Optional[bool] = config.get("binary", None)
         self._force_no_header: Optional[bool] = config.get("no_header", None)
 
-        if torch.backends.mps.is_available():
-            self.device = "mps"
-        elif torch.cuda.is_available():
-            self.device = "cuda"
-        else:
+        try:
+            import torch
+            if torch.backends.mps.is_available():
+                self.device = "mps"
+            elif torch.cuda.is_available():
+                self.device = "cuda"
+            else:
+                self.device = "cpu"
+        except ImportError:
             self.device = "cpu"
 
         self._tok_re = re.compile(self.tokenizer_pattern)
@@ -102,6 +108,8 @@ class StaticEmbeddingFeatureExtractor(BaseFeatureExtractor):
         Tokens -> [N, D], one row per input token. If `stimuli` is a string, it is tokenized.
         OOV handling per config (default: copy previous valid embedding).
         """
+        import numpy as np
+
         # Normalize input to a token list
         if isinstance(stimuli, str):
             text = stimuli.lower() if self.lowercase else stimuli
@@ -181,6 +189,7 @@ class StaticEmbeddingFeatureExtractor(BaseFeatureExtractor):
         return np.stack([np.asarray(v, dtype=np.float32) for v in vecs], axis=0)
 
     def _load_local_vectors(self, path: str) -> KeyedVectors:
+        from gensim.models import KeyedVectors
         ext = path.lower()
 
         if ext.endswith(".kv"):
