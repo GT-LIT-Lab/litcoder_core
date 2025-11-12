@@ -47,6 +47,7 @@ autodoc_mock_imports = [
     "datasets",
     "nltk",
     "scikit-learn",
+    "sklearn",
     "statsmodels",
     "shap",
     "numba",
@@ -77,7 +78,7 @@ napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
 
-# Autodoc settings
+# Enable autodoc to generate API documentation
 autodoc_default_options = {
     "members": True,
     "member-order": "bysource",
@@ -86,21 +87,8 @@ autodoc_default_options = {
     "exclude-members": "__weakref__",
 }
 
-# Autosummary settings
+# Enable autosummary to automatically generate module documentation
 autosummary_generate = True
-
-# Skip problematic modules during autosummary generation
-autosummary_imported_members = False
-autosummary_mock_imports = [
-    "encoding.models",
-    "encoding.features",
-    "encoding.assembly",
-    "encoding.plotting",
-    "encoding.brain_projection",
-    "encoding.downsample",
-    "encoding.utils",
-    "encoding.trainer",
-]
 
 # HTML output options
 try:
