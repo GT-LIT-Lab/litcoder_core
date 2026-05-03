@@ -267,13 +267,12 @@ This repository is under active development. We will continue to add many featur
 
 If you use **LITcoder** in your research, please cite:
 ```bibtex
-@misc{binhuraib2025litcodergeneralpurposelibrarybuilding,
-      title={LITcoder: A General-Purpose Library for Building and Comparing Encoding Models}, 
-      author={Taha Binhuraib and Ruimin Gao and Anna A. Ivanova},
-      year={2025},
-      eprint={2509.09152},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2509.09152}, 
+@inproceedings{
+binhuraib2025litcoder,
+title={{LIT}coder: A General-Purpose Library for Building and Comparing  Encoding Models},
+author={Taha Osama A Binhuraib and Ruimin Gao and Anna A Ivanova},
+booktitle={Data on the Brain {\&} Mind Findings},
+year={2025},
+url={https://openreview.net/forum?id=c9GUBrE5RV}
 }
 ```
