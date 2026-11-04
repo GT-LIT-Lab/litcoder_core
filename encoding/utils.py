@@ -199,6 +199,8 @@ class ActivationCache:
         last_token: bool,
         dataset_type: str,
         raw: bool,
+        hook_type: str,
+        stimuli_sha256: str,
     ) -> str:
         """Generate a unique cache key for the given parameters.
 
@@ -209,6 +211,8 @@ class ActivationCache:
             context_type: Type of context (fullcontext, nocontext, halfcontext)
             last_token: Whether to use only the last token
             dataset_type: Type of dataset
+            hook_type: TransformerLens hook the activations were read from
+            stimuli_sha256: Hash of the exact stimulus strings fed to the model
 
         Returns:
             Cache key string
@@ -221,6 +225,8 @@ class ActivationCache:
             "last_token": last_token,
             "dataset_type": dataset_type,
             "raw": raw,
+            "hook_type": hook_type,
+            "stimuli_sha256": stimuli_sha256,
         }
         # Create a deterministic hash of the parameters
         key = hashlib.md5(json.dumps(params, sort_keys=True).encode()).hexdigest()
@@ -297,87 +303,138 @@ class ModelSaver:
         self.base_dir = Path(base_dir)
         self.base_dir.mkdir(parents=True, exist_ok=True)
 
-    def _create_run_dir(self, hyperparams: Dict[str, Any]) -> Path:
-        """Create a unique directory for this run based on hyperparameters.
-
-        Args:
-            hyperparams: Dictionary of hyperparameters
-
-        Returns:
-            Path to the run directory
-        """
-        # Create a unique hash of the hyperparameters
-        hyperparams_str = json.dumps(hyperparams, sort_keys=True)
-        run_hash = hashlib.md5(hyperparams_str.encode()).hexdigest()[:8]
-
-        # Create directory with timestamp and hash
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        run_dir = self.base_dir / f"run_{timestamp}_{run_hash}"
-        run_dir.mkdir(parents=True, exist_ok=True)
-
-        # Save hyperparameters
-        with open(run_dir / "hyperparams.json", "w") as f:
-            json.dump(hyperparams, f, indent=2)
-
-        return run_dir
+    @staticmethod
+    def _json_value(value):
+        """Allow scientific configuration values without silently stringifying them."""
+        if isinstance(value, np.ndarray):
+            return value.tolist()
+        if isinstance(value, np.generic):
+            return value.item()
+        if isinstance(value, Path):
+            return str(value)
+        raise TypeError(f"Cannot serialize configuration value {type(value).__name__}")
 
     def save_encoding_model(
         self,
-        weights: np.ndarray,
-        best_alphas: np.ndarray,
+        weights: Optional[np.ndarray],
+        best_alphas: Optional[np.ndarray],
         hyperparams: Dict[str, Any],
         metrics: Dict[str, Any],
-        save_weights: bool = False,
+        save_weights: bool = True,
+        results: Optional[Dict[str, Any]] = None,
     ) -> Path:
-        """Save encoding model weights and hyperparameters.
+        """Publish a complete, uniquely named version-2 run.
 
-        Args:
-            weights: Model weights (n_features, n_targets)
-            best_alphas: Best alpha values for each target
-            hyperparams: Dictionary of hyperparameters
-            metrics: Dictionary of evaluation metrics
-
-        Returns:
-            Path to the run directory
+        Returned ridge arrays and fitted folds are saved when available.
+        With save_weights=False fitted state is omitted and stored predictions
+        and metadata remain available.
+        Pickle artifacts, including legacy metrics, must come from trusted sources.
         """
-        # Create run directory
-        run_dir = self._create_run_dir(hyperparams)
+        import tempfile
+        from uuid import uuid4
 
-        # Save weights and alphas
-        if save_weights:
-            np.save(run_dir / "weights.npy", weights)
+        # Validate configuration serialization before creating any output.
+        hyperparams_json = json.dumps(hyperparams, sort_keys=True, indent=2,
+                                      default=self._json_value)
+        run_hash = hashlib.md5(hyperparams_json.encode()).hexdigest()[:8]
+        stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        destination = self.base_dir / f"run_{stamp}_{run_hash}_{uuid4().hex[:12]}"
+        with tempfile.TemporaryDirectory(prefix=".saving_", dir=self.base_dir) as tmp:
+            staging = Path(tmp)
+            (staging / "hyperparams.json").write_text(hyperparams_json)
+            if best_alphas is not None:
+                np.save(staging / "best_alphas.npy", best_alphas)
+            weights_saved = save_weights and weights is not None
+            if weights_saved:
+                np.save(staging / "weights.npy", weights)
+            with open(staging / "metrics.pkl", "wb") as f:
+                pickle.dump(metrics, f, protocol=pickle.HIGHEST_PROTOCOL)
+            payload = results
+            if results is not None and not save_weights:
+                payload = {
+                    **results,
+                    "folds": [
+                        {key: value for key, value in fold.items()
+                         if key not in ("weights", "estimator_state")}
+                        for fold in results.get("folds", [])
+                    ],
+                }
+            if payload is not None:
+                with open(staging / "results.pkl", "wb") as f:
+                    pickle.dump(payload, f, protocol=pickle.HIGHEST_PROTOCOL)
+            manifest = {
+                "format_version": 2,
+                "weights_saved": weights_saved,
+                "alphas_saved": best_alphas is not None,
+                "results_saved": payload is not None,
+                "replay_available": any(
+                    "weights" in fold or "estimator_state" in fold
+                    for fold in (payload or {}).get("folds", [])
+                ),
+                "returned_weights_role": (
+                    results["returned_weights_role"] if results else "caller_supplied_unspecified"
+                ),
+                "returned_alphas_role": (
+                    results["returned_alphas_role"] if results else "caller_supplied_unspecified"
+                ),
+            }
+            (staging / "manifest.json").write_text(json.dumps(manifest, indent=2))
+            # Rename only after all files have been written. A failure is raised,
+            # never reported as a successful run or confused with plotting errors.
+            staging.replace(destination)
+        return destination
 
-        # Save metrics using pickle instead of JSON
-        with open(run_dir / "metrics.pkl", "wb") as f:
-            pickle.dump(metrics, f)
+    def load_encoding_result(self, run_dir: Union[str, Path]) -> Dict[str, Any]:
+        """Load a trusted run, including fitted folds and metadata when available.
 
-        return run_dir
-
-    def load_encoding_model(
-        self,
-        run_dir: Union[str, Path],
-    ) -> Tuple[np.ndarray, np.ndarray, Dict[str, Any], Dict[str, Any]]:
-        """Load encoding model weights and hyperparameters.
-
-        Args:
-            run_dir: Path to the run directory
-
-        Returns:
-            Tuple of (weights, best_alphas, hyperparams, metrics)
+        Versionless legacy runs may lack weights/alphas. Return None for absent
+        weights and recover alphas only from recorded metrics, with an explicit
+        warning. Never invent a reproducible legacy model.
         """
         run_dir = Path(run_dir)
-
-        # Load weights and alphas
-        weights = np.load(run_dir / "weights.npy")
-        best_alphas = np.load(run_dir / "best_alphas.npy")
-
-        # Load hyperparameters and metrics
-        with open(run_dir / "hyperparams.json", "r") as f:
-            hyperparams = json.load(f)
+        manifest_path = run_dir / "manifest.json"
+        manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else None
+        if manifest is not None and manifest.get("format_version") != 2:
+            raise ValueError(f"Unsupported encoding result format: {manifest.get('format_version')}")
         with open(run_dir / "metrics.pkl", "rb") as f:
             metrics = pickle.load(f)
+        hyperparams = json.loads((run_dir / "hyperparams.json").read_text())
+        if manifest is not None:
+            weights = np.load(run_dir / "weights.npy", allow_pickle=False) if manifest["weights_saved"] else None
+            alphas = (np.load(run_dir / "best_alphas.npy", allow_pickle=False)
+                      if manifest.get("alphas_saved", True) else None)
+            if manifest["results_saved"]:
+                with open(run_dir / "results.pkl", "rb") as f:
+                    results = pickle.load(f)
+            else:
+                results = None
+        else:
+            weights_path = run_dir / "weights.npy"
+            alphas_path = run_dir / "best_alphas.npy"
+            weights = np.load(weights_path, allow_pickle=False) if weights_path.exists() else None
+            recorded = metrics.get("best_alphas")
+            alphas = (np.load(alphas_path, allow_pickle=False) if alphas_path.exists()
+                      else np.asarray(recorded) if recorded is not None else None)
+            results = None
+            logger.warning(
+                "Legacy run has no fitted-fold/transform provenance; replay is unverified "
+                "(weights present: %s, alphas present: %s)", weights is not None, alphas is not None,
+            )
+        return {"format_version": manifest["format_version"] if manifest else 1,
+                "manifest": manifest, "weights": weights, "best_alphas": alphas,
+                "hyperparams": hyperparams, "metrics": metrics, "results": results}
 
-        return weights, best_alphas, hyperparams, metrics
+    def load_encoding_model(
+        self, run_dir: Union[str, Path],
+    ) -> Tuple[Optional[np.ndarray], Optional[np.ndarray], Dict[str, Any], Dict[str, Any]]:
+        """Compatibility four-tuple loader; use load_encoding_result for folds.
+
+        In nested CV, returned weights/alphas are descriptive fold means, not a
+        fitted full-data model. Replay an identified fold from results instead.
+        """
+        loaded = self.load_encoding_result(run_dir)
+        return (loaded["weights"], loaded["best_alphas"],
+                loaded["hyperparams"], loaded["metrics"])
 
     def list_runs(self) -> List[Dict[str, Any]]:
         """List all saved runs with their hyperparameters and metrics.

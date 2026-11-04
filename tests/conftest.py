@@ -273,6 +273,9 @@ class _NullBrainPlotter:
     def log_plots(self, *args, **kwargs):
         self.calls += 1
 
+    def log_descriptive_correlations(self, *args, **kwargs):
+        self.calls += 1
+
 
 @pytest.fixture(autouse=True)
 def _no_external_side_effects(monkeypatch):

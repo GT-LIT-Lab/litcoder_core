@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 import numpy as np
 
 
@@ -32,3 +32,9 @@ class StoryData:
     words: Optional[List[str]] = None
     mask_indices: Optional[np.ndarray] = None
     audio_path: Optional[str] = None
+    # Optional additions: old constructors and fMRI pickles keep their behavior.
+    target_metadata: Optional[List[Dict[str, Any]]] = None
+    provenance: Optional[Dict[str, Any]] = None
+    # Recording/sample clocks, original IDs, validity and acquisition metadata.
+    # Invalid rows remain present; this is not a training/exclusion mask API.
+    sample_metadata: Optional[Dict[str, Any]] = None

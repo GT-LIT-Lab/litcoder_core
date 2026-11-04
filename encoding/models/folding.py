@@ -31,6 +31,25 @@ def create_folds(
         List of (train_indices, test_indices) tuples
     """
     print(f"THIS IS THE FOLDING TYPE: {fold_type} inside folding.py")
+    if trim_size is not None and (
+        not isinstance(trim_size, (int, np.integer)) or trim_size < 0
+    ):
+        raise TypeError(
+            f"trim_size must be a non-negative int, got {type(trim_size).__name__}; "
+            "pass groups by keyword (groups=...)"
+        )
+    splits = _create_folds(n_samples, fold_type, n_folds, chunk_length, trim_size, groups, seed)
+    for i, (train_idx, test_idx) in enumerate(splits):
+        if len(train_idx) == 0 or len(test_idx) == 0:
+            raise ValueError(
+                f"{fold_type} fold {i} has {len(train_idx)} train and {len(test_idx)} test "
+                f"samples (n_samples={n_samples}, n_folds={n_folds}, "
+                f"chunk_length={chunk_length}, trim_size={trim_size})"
+            )
+    return splits
+
+
+def _create_folds(n_samples, fold_type, n_folds, chunk_length, trim_size, groups, seed):
     if fold_type == "chunked":
         # Current chunked implementation with random shuffling
         return create_chunked_folds(
@@ -70,6 +89,23 @@ def create_folds(
         raise ValueError(f"Unknown folding type: {fold_type}")
 
 
+def _chunks_per_fold(n_samples: int, n_folds: int, chunk_length: int) -> int:
+    """Chunks per fold; raises instead of falling back to sample-level KFold."""
+    n_complete_chunks = n_samples // chunk_length
+    if n_complete_chunks < n_folds:
+        raise ValueError(
+            f"{n_samples} samples give {n_complete_chunks} chunks of {chunk_length}, "
+            f"fewer than n_folds={n_folds}; use fewer folds or shorter chunks"
+        )
+    dropped = n_samples - n_complete_chunks * chunk_length
+    if dropped:
+        logging.warning(
+            f"Chunked folds drop the last {dropped} of {n_samples} samples "
+            f"(not a multiple of chunk_length={chunk_length})"
+        )
+    return n_complete_chunks // n_folds
+
+
 def create_chunked_folds(
     n_samples: int,
     n_folds: int,
@@ -96,17 +132,7 @@ def create_chunked_folds(
     if shuffle:
         random.Random(seed).shuffle(chunk_indices)
 
-    # Divide chunks evenly into n_folds
-    chunks_per_fold = n_complete_chunks // n_folds
-    if chunks_per_fold == 0:
-        # Not enough chunks for the requested folds, fall back to regular KFold
-        logging.warning(
-            "Not enough chunks for the requested folds, falling back to regular KFold"
-        )
-        kf = KFold(
-            n_splits=n_folds, shuffle=shuffle, random_state=seed if shuffle else None
-        )
-        return list(kf.split(range(n_samples)))
+    chunks_per_fold = _chunks_per_fold(n_samples, n_folds, chunk_length)
 
     # Create exactly n_folds splits
     splits = []
@@ -170,14 +196,7 @@ def create_chunked_folds_trimmed(
     if shuffle:
         random.Random(seed).shuffle(chunk_indices)
 
-    # Divide chunks evenly into n_folds
-    chunks_per_fold = n_complete_chunks // n_folds
-    if chunks_per_fold == 0:
-        logging.warning(
-            "Not enough chunks for the requested folds, falling back to regular KFold"
-        )
-        kf = KFold(n_splits=n_folds, shuffle=False)
-        return list(kf.split(range(n_samples)))
+    chunks_per_fold = _chunks_per_fold(n_samples, n_folds, chunk_length)
 
     # Create exactly n_folds splits
     splits = []
@@ -254,15 +273,12 @@ def create_kfold_trimmed(
         test_indices = list(test_indices)
 
         # Trim the test set - remove first and last trim_size samples
-        if len(test_indices) > 2 * trim_size:
-            trimmed_test = test_indices[trim_size:-trim_size]
-        else:
-            # If test fold is too small to trim, keep original
-            logging.warning(
+        if len(test_indices) <= 2 * trim_size:
+            raise ValueError(
                 f"Test fold too small ({len(test_indices)} samples) to trim {trim_size} "
-                f"from each end, keeping original test set"
+                "from each end; use fewer folds or a smaller trim_size"
             )
-            trimmed_test = test_indices
+        trimmed_test = test_indices[trim_size : len(test_indices) - trim_size]
 
         # Training set remains unchanged
         trimmed_splits.append((train_indices, trimmed_test))

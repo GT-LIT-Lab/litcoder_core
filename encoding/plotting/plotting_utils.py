@@ -235,13 +235,13 @@ class BrainPlotter:
         """Plot histogram of all correlations."""
         fig = plt.figure(figsize=(10, 6))
         sns.set_theme(style="whitegrid")
-        valid_correlations = correlations[~np.isnan(correlations)]
+        valid_correlations = correlations[np.isfinite(correlations)]
         sns.histplot(
             valid_correlations,
             bins=100,
             color="blue",
             label="All",
-            kde=True,
+            kde=bool(valid_correlations.size > 1 and np.ptp(valid_correlations) > 0),
             stat="density",
         )
         plt.legend()
@@ -260,14 +260,14 @@ class BrainPlotter:
         fig = plt.figure(figsize=(10, 6))
         sns.set_theme(style="whitegrid")
         sig_correlations = correlations[significant_mask]
-        valid_sig_correlations = sig_correlations[~np.isnan(sig_correlations)]
+        valid_sig_correlations = sig_correlations[np.isfinite(sig_correlations)]
 
         sns.histplot(
             valid_sig_correlations,
             bins=100,
             color="green",
             label="Significant",
-            kde=True,
+            kde=bool(valid_sig_correlations.size > 1 and np.ptp(valid_sig_correlations) > 0),
             stat="density",
         )
         plt.legend()
@@ -275,6 +275,16 @@ class BrainPlotter:
         plt.ylabel("Density")
         plt.title(title)
         return fig
+
+    def log_descriptive_correlations(self, correlations):
+        """Report ECoG scores without a significance classification."""
+        figure = self.plot_all_correlations_histogram(
+            correlations, title="Descriptive Pearson correlations (inference not assessed)"
+        )
+        try:
+            self.logger.log_image("descriptive_correlation_histogram", figure)
+        finally:
+            plt.close(figure)
 
     def log_plots(
         self,
@@ -285,18 +295,22 @@ class BrainPlotter:
         is_volume: bool = False,
         language_mask: Optional[np.ndarray] = None,
         roi_masks: Optional[Dict[str, np.ndarray]] = None,
+        surface: Optional[bool] = None,
     ):
         """
         Log brain surface plots and correlation histograms using the configured logger.
 
         Args:
-            correlations: (20484,) correlations for fsaverage5 surface (L then R)
-            significant_mask: (20484,) boolean mask of significant vertices
+            correlations: One-dimensional scores in target order. Only fsaverage5
+                length (20484) is eligible for the legacy surface path.
+            significant_mask: Boolean mask matching the target scores
             prefix: optional namespace for log keys
             step: optional step number for logging
             is_volume: skip surface plotting if True
             language_mask: (20484,) optional boolean mask for language network
             roi_masks: optional dict[str, np.ndarray] of additional ROI masks
+            surface: False explicitly disables surfaces even for 20484 generic
+                targets; None preserves legacy fsaverage5 length detection.
         """
 
         def _sanitize(name: str) -> str:
@@ -311,25 +325,27 @@ class BrainPlotter:
         correlations = np.asarray(correlations)
         significant_mask = np.asarray(significant_mask, dtype=bool)
 
-        if not is_volume:
-            if correlations.shape[0] != full_len:
-                raise ValueError(
-                    f"`correlations` must be length {full_len}, got {correlations.shape}"
-                )
-
-        if significant_mask.shape[0] != correlations.shape[0]:
+        if correlations.ndim != 1 or significant_mask.shape != correlations.shape:
             raise ValueError(
-                f"`significant_mask` must match correlations length, got {significant_mask.shape} vs {correlations.shape}"
+                "correlations must be one-dimensional and significant_mask must "
+                f"match its shape, got {correlations.shape} and {significant_mask.shape}"
             )
+        # Generic target counts get histograms, without a surface download.
+        is_volume = is_volume or surface is False or len(correlations) != full_len
+
+        def _log_image(name, figure, step=None):
+            try:
+                self.logger.log_image(name, figure, step)
+            finally:
+                plt.close(figure)
 
         # All correlations histogram
         fig_all = self.plot_all_correlations_histogram(
             correlations, title="All Correlations Distribution"
         )
-        self.logger.log_image(f"{prefix}correlation_histogram_all", fig_all, step)
-        plt.close(fig_all)
+        _log_image(f"{prefix}correlation_histogram_all", fig_all, step)
 
-        valid_correlations = correlations[~np.isnan(correlations)]
+        valid_correlations = correlations[np.isfinite(correlations)]
         self.logger.log_histogram(
             f"{prefix}correlation_histogram_data_all", valid_correlations, step
         )
@@ -344,10 +360,9 @@ class BrainPlotter:
                 is_volume=is_volume,
             )
             if fig_significant is not None:
-                self.logger.log_image(
+                _log_image(
                     f"{prefix}brain_surface_significant", fig_significant, step
                 )
-                plt.close(fig_significant)
 
             fig_all_surface = self.plot_surface_correlations(
                 correlations,
@@ -357,10 +372,9 @@ class BrainPlotter:
                 is_volume=is_volume,
             )
             if fig_all_surface is not None:
-                self.logger.log_image(
+                _log_image(
                     f"{prefix}brain_surface_all", fig_all_surface, step
                 )
-                plt.close(fig_all_surface)
 
         # Significant correlations histogram
         fig_sig = self.plot_significant_correlations_histogram(
@@ -368,13 +382,12 @@ class BrainPlotter:
             significant_mask,
             title="Significant Correlations Distribution",
         )
-        self.logger.log_image(
+        _log_image(
             f"{prefix}correlation_histogram_significant", fig_sig, step
         )
-        plt.close(fig_sig)
 
         sig_correlations = correlations[significant_mask]
-        valid_sig_correlations = sig_correlations[~np.isnan(sig_correlations)]
+        valid_sig_correlations = sig_correlations[np.isfinite(sig_correlations)]
         self.logger.log_histogram(
             f"{prefix}correlation_histogram_data_significant",
             valid_sig_correlations,
@@ -409,8 +422,7 @@ class BrainPlotter:
                     is_volume=is_volume,
                 )
                 if fig_lang is not None:
-                    self.logger.log_image(f"{prefix}lanA_surface", fig_lang, step)
-                    plt.close(fig_lang)
+                    _log_image(f"{prefix}lanA_surface", fig_lang, step)
 
         # ROI analysis
         if roi_masks:
@@ -447,5 +459,4 @@ class BrainPlotter:
                         is_volume=is_volume,
                     )
                     if fig_roi is not None:
-                        self.logger.log_image(f"{prefix}{key}_surface", fig_roi, step)
-                        plt.close(fig_roi)
+                        _log_image(f"{prefix}{key}_surface", fig_roi, step)

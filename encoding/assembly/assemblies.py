@@ -4,7 +4,7 @@ import numpy as np
 from typing import Dict, List, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .assembly_generator import StoryData
+    from .story_data import StoryData
 
 
 class SimpleNeuroidAssembly:
@@ -134,6 +134,21 @@ class SimpleNeuroidAssembly:
             List of word rate arrays, one for each story
         """
         return [self.story_data[story].word_rates for story in self.stories]
+
+    def get_target_metadata(self):
+        """Ordered per-recording target metadata, or None for legacy assemblies."""
+        return [getattr(self.story_data[story], "target_metadata", None)
+                for story in self.stories]
+
+    def get_sample_metadata(self):
+        """Per-recording original identities/clocks/validity, without dropping rows."""
+        return [getattr(self.story_data[story], "sample_metadata", None)
+                for story in self.stories]
+
+    def get_provenance(self):
+        """Declared input provenance, or None if absent in an older assembly."""
+        return [getattr(self.story_data[story], "provenance", None)
+                for story in self.stories]
 
     def get_coord(self, name: str) -> np.ndarray:
         """Get coordinate values by name."""
