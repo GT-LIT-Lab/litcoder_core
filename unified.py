@@ -323,6 +323,8 @@ class UnifiedTrainer:
 
     def train(self) -> Dict[str, Any]:
         """Run the training process."""
+        self.last_run_dir_ = None
+        self.reporting_error_ = None
         try:
             # Prepare data using universal method
             data = self.prepare_data()
@@ -347,6 +349,7 @@ class UnifiedTrainer:
                     use_corr=True,
                     normalize_features=self.config["normalize_features"],
                     normalize_targets=self.config["normalize_targets"],
+                    result_metadata=self.config.get("result_metadata"),
                 )
             else:
                 # Cross-validation (LPP/Narratives)
@@ -364,11 +367,10 @@ class UnifiedTrainer:
                     use_corr=True,
                     normalize_features=self.config["normalize_features"],
                     normalize_targets=self.config["normalize_targets"],
+                    result_metadata=self.config.get("result_metadata"),
                 )
 
-            # Log and save
-            self.log_metrics(metrics)
-            
+            # Persist fitted state before optional result reporting.
             hyperparams = {
                 **self.config,
                 "single_alpha": True,
@@ -376,12 +378,22 @@ class UnifiedTrainer:
                 "use_corr": True,
             }
 
-            self.model_saver.save_encoding_model(
+            self.last_run_dir_ = self.model_saver.save_encoding_model(
                 weights=weights,
                 best_alphas=best_alphas,
                 hyperparams=hyperparams,
                 metrics=metrics,
+                results=getattr(self.model, "results_", None),
             )
+            self.reporting_error_ = None
+            try:
+                self.log_metrics(metrics)
+            except Exception as error:
+                self.reporting_error_ = f"{type(error).__name__}: {error}"
+                self.logger.warning(
+                    "Optional result reporting failed; fitted results are saved at %s: %s",
+                    self.last_run_dir_, self.reporting_error_, exc_info=True,
+                )
 
             # Print results
             self.logger.info("\nTraining Results:")

@@ -1,4 +1,6 @@
 from typing import Dict, Any, Union, Optional, Tuple
+import hashlib
+import json
 import numpy as np
 from datetime import datetime
 from .base import BaseFeatureExtractor
@@ -146,15 +148,26 @@ class FeatureExtractorFactory:
         """Extract language model features with caching."""
         texts = assembly.get_stimuli()[idx]
 
+        # Identity of the cached activations: the stimulus strings themselves
+        # (which encode the assembly's context policy and lookback) plus every
+        # extraction setting that changes the values.
+        identity = {
+            "model_name": extractor.model_name,
+            "story": story,
+            "context_type": getattr(extractor, "context_type", "fullcontext"),
+            "hook_type": extractor.hook_type,
+            "last_token": getattr(extractor, "last_token", False),
+            "dataset_type": dataset_type,
+            "stimuli_sha256": hashlib.sha256(
+                json.dumps(list(texts)).encode()
+            ).hexdigest(),
+        }
+
         # Try to load cached activations
         cache_key = extractor.activation_cache._get_cache_key(
-            story=story,
-            lookback=lookback,  # You can make this configurable
-            model_name=extractor.model_name,
-            context_type=getattr(extractor, "context_type", "fullcontext"),
-            last_token=getattr(extractor, "last_token", False),
-            dataset_type=dataset_type,
+            lookback=lookback,
             raw=True,
+            **identity,
         )
         print(f"this is the last token: {getattr(extractor, 'last_token', False)}")
         print(f"this is the lookback: {lookback}")
@@ -163,6 +176,15 @@ class FeatureExtractorFactory:
         lazy_cache = extractor.activation_cache.load_multi_layer_activations(cache_key)
 
         if lazy_cache is not None:
+            cached = lazy_cache.get_metadata()
+            mismatched = {
+                k: (cached.get(k), v) for k, v in identity.items() if cached.get(k) != v
+            }
+            if mismatched:
+                raise ValueError(
+                    f"Cached activations {cache_key} do not match the request "
+                    f"(cached, requested): {mismatched}"
+                )
             return lazy_cache.get_layer(layer_idx)
         else:
             # Compute and cache features
@@ -170,13 +192,8 @@ class FeatureExtractorFactory:
 
             # Create metadata for caching
             metadata = {
-                "model_name": extractor.model_name,
-                "story": story,
+                **identity,
                 "lookback": lookback,
-                "context_type": getattr(extractor, "context_type", "fullcontext"),
-                "hook_type": extractor.hook_type,
-                "last_token": getattr(extractor, "last_token", False),
-                "dataset_type": dataset_type,
                 "available_layers": list(all_features.keys()),
                 "created_at": datetime.now().isoformat(),
             }

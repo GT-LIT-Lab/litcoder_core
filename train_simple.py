@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
+import os
 
 from encoding.assembly.assembly_loader import load_assembly
 from encoding.features.factory import FeatureExtractorFactory
@@ -14,7 +15,10 @@ def main():
     logger = logging.getLogger(__name__)
 
     # 1) Load the packaged assembly
-    assembly_path = "/storage/coda1/p-aivanova7/0/shared/litcoder_core/scripts/assembly_lebel_uts03.pkl"
+    assembly_path = os.environ.get(
+        "LITCODER_LEBEL_ASSEMBLY",
+        "/storage/coda1/p-aivanova7/0/shared/litcoder_core/scripts/assembly_lebel_uts03.pkl",
+    )
     logger.info(f"Loading assembly from {assembly_path}")
     assembly = load_assembly(assembly_path)
 

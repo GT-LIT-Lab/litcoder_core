@@ -1,5 +1,5 @@
 import torch
-from typing import List, Union, Optional
+from typing import List, Union, Optional, Tuple
 import logging
 from encoding.models.ridge_utils import svd_wrapper, mult_diag, z_score
 
@@ -12,7 +12,8 @@ def ridge_torch(
     alphas: Union[float, torch.Tensor],
     singcutoff: float = 1e-30,
     normalpha: bool = False,
-) -> torch.Tensor:
+    return_info: bool = False,
+) -> Union[torch.Tensor, Tuple[torch.Tensor, dict]]:
     """PyTorch version of ridge function for computing weights
 
     Args:
@@ -21,6 +22,7 @@ def ridge_torch(
         alphas: Ridge parameters (single float or per-voxel tensor)
         singcutoff: Cutoff for small singular values
         normalpha: Whether to normalize alpha by largest singular value
+        return_info: Also return effective fitted penalties for persistence.
 
     Returns:
         wt: Ridge regression weights (n_features, n_voxels)
@@ -60,6 +62,8 @@ def ridge_torch(
         awt = torch.matmul(Vh_D, UR[:, selvox])
         wt[:, selvox] = awt
 
+    if return_info:
+        return wt, {"effective_penalties": (nalphas ** 2).detach().cpu().numpy().copy()}
     return wt
 
 

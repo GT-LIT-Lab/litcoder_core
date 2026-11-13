@@ -1,0 +1,157 @@
+{
+  "fixture": {
+    "file": "assembly_lebel_uts03.pkl",
+    "md5": "9bec82d87d528ca0e68e421c3c73136e",
+    "source": "Google Drive link in README",
+    "env_var": "LITCODER_LEBEL_ASSEMBLY"
+  },
+  "run": {
+    "date": "2026-10-12",
+    "commit": "ec31915a05daede3edfd31ae9966bec556e5c5a9",
+    "script": "train_simple.py",
+    "machine": "macOS, Apple Silicon, MPS (linalg_svd falls back to CPU)",
+    "env": "conda env 'litcoder'",
+    "fit_seconds": 14.5,
+    "fold_seed": 0
+  },
+  "environment": {
+    "note": "Tolerances are chosen strict when this fingerprint matches the running environment exactly, loose otherwise. See tolerances.rationale.",
+    "fingerprint": {
+      "platform_system": "Darwin",
+      "platform_machine": "arm64",
+      "torch": "2.13.0",
+      "numpy": "2.4.6",
+      "scipy": "1.18.0",
+      "device": "mps:0",
+      "torch_threads": 4
+    }
+  },
+  "config": {
+    "extractor": "wordrate",
+    "fir_delays": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "folding_type": "chunked",
+    "n_inner_folds": 5,
+    "chunk_length": 20,
+    "alphas": "np.logspace(-1, 8, 10) (fit_predict default)",
+    "downsampler": "default (rect; wordrate is not downsampled)",
+    "trimming_config": {
+      "train_features_start": 10,
+      "train_features_end": -5,
+      "train_targets_start": 0,
+      "train_targets_end": null,
+      "test_features_start": 50,
+      "test_features_end": -5,
+      "test_targets_start": 40,
+      "test_targets_end": null
+    }
+  },
+  "shapes": {
+    "X_train": [
+      8673,
+      4
+    ],
+    "Y_train": [
+      8673,
+      20484
+    ],
+    "X_test": [
+      251,
+      4
+    ],
+    "Y_test": [
+      251,
+      20484
+    ]
+  },
+  "metrics": {
+    "median_score": 0.042643629,
+    "n_significant": 2867,
+    "n_voxels": 20484
+  },
+  "quantiles": {
+    "1": -0.1695338935,
+    "5": -0.1018701419,
+    "25": -0.0154135684,
+    "50": 0.042643629,
+    "75": 0.1100961417,
+    "90": 0.1946224123,
+    "95": 0.2598253787,
+    "99": 0.4205047786
+  },
+  "threshold_counts": {
+    "0.1": 5721,
+    "0.2": 1924
+  },
+  "tolerances": {
+    "quantile_atol_strict": 1e-05,
+    "quantile_atol_loose": 0.002,
+    "count_rtol_strict": 0.01,
+    "count_rtol_loose": 0.05,
+    "rationale": "Derived from measurement, not from the two historical runs. Across four configurations of the same input (two processes on CPU, one on MPS, one with torch 2.11/numpy 1.26/scipy 1.13) the largest spread of any asserted quantile was 2.4e-07, and n_significant was identical (2867) in all four. Strict quantile atol of 1e-5 is ~40x that observed spread and ~1x the mean spacing of the correlation distribution near the median, so a single voxel changing rank cannot trip it. Loose atol of 2e-3 covers the regime where per-voxel correlations move by 1e-3; real regressions (misaligned trimming, wrong downsampler, wrong FIR window) move quantiles by 1e-2 or more, so the loose band still catches them with an order of magnitude to spare. Counts are banded rather than exact because FDR thresholding is an order statistic with a cascade (see measured_variance.bh_cutoff)."
+  },
+  "measured_variance": {
+    "method": "Same persisted train/test matrices fed to NestedCVModel.fit_predict under four configurations.",
+    "cpu_process_1_vs_process_2": {
+      "bitwise_identical": true,
+      "max_abs_dr": 0.0,
+      "delta_median": 0.0,
+      "alpha_flips": 0,
+      "significance_flips": 0
+    },
+    "cpu_vs_mps": {
+      "bitwise_identical": false,
+      "max_abs_dr": 6.654e-06,
+      "p99_abs_dr": 4.321e-07,
+      "delta_median": 0.0,
+      "alpha_flips": 0,
+      "significance_flips": 0
+    },
+    "cross_library_torch_2_11_numpy_1_26_scipy_1_13": {
+      "bitwise_identical": false,
+      "max_abs_dr": 1.067e-07,
+      "delta_median": 4.717e-09,
+      "alpha_flips": 0,
+      "significance_flips": 0
+    },
+    "max_quantile_spread_across_all_four": 2.384e-07,
+    "correlation_spacing_at_median": {
+      "adjacent_gap": 4.247e-07,
+      "mean_gap_within_100_ranks": 9.449e-06,
+      "max_gap_within_100_ranks": 6.757e-05
+    },
+    "bh_cutoff": {
+      "alpha": 0.05,
+      "p_at_cutoff": 0.006986395,
+      "bh_step_alpha_over_m": 2.441e-06,
+      "gap_to_next_p_value": 2.414e-05,
+      "voxels_within_one_bh_index_step": 1,
+      "n_significant_swing_for_uniform_r_shift": {
+        "1e-05": 0,
+        "0.0001": 10,
+        "0.001": 59
+      }
+    },
+    "threshold_count_swing_for_uniform_r_shift": {
+      "r_gt_0.1": {
+        "1e-05": 0,
+        "0.0001": 16,
+        "0.001": 128
+      },
+      "r_gt_0.2": {
+        "1e-05": 1,
+        "0.0001": 4,
+        "0.001": 44
+      }
+    }
+  },
+  "regeneration": {
+    "command": "LITCODER_LEBEL_ASSEMBLY=/path/to/assembly_lebel_uts03.pkl python tests/test_golden_lebel.py --update",
+    "when": "Run this only when a change to the pipeline is intended. It rewrites metrics, quantiles, threshold_counts, shapes and the environment fingerprint from a fresh run, and leaves tolerances and notes alone. Review the diff: a change you did not expect is the test doing its job."
+  },
+  "notes": "Baseline generated locally rather than on PACE. An earlier run recorded on 2026-08 (median 0.043, 2853 significant voxels) is NOT comparable to this one and must not be used to justify a tolerance. That run predates the commit 'seed fold shuffling for reproducible splits'; before it, create_chunked_folds called bare random.shuffle() on the global unseeded RNG, so the inner-CV folds differed on every invocation and the fit was a different model each time. The gap between the two recorded numbers is therefore not evidence of environmental variance, and the August run is not reproducible by current code on any machine."
+}

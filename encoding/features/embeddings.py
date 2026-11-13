@@ -96,7 +96,7 @@ class StaticEmbeddingFeatureExtractor(BaseFeatureExtractor):
     def extract_features(
         self,
         stimuli: Union[str, List[str]],
-        **kwargs,
+        *, return_source_indices=False, **kwargs,
     ) -> np.ndarray:
         """
         Tokens -> [N, D], one row per input token. If `stimuli` is a string, it is tokenized.
@@ -120,16 +120,20 @@ class StaticEmbeddingFeatureExtractor(BaseFeatureExtractor):
 
         N = len(tokens)
         if N == 0:
-            return np.zeros((0, self.dim), dtype=np.float32)
+            empty = np.zeros((0, self.dim), dtype=np.float32)
+            return (empty, np.empty(0, dtype=int)) if return_source_indices else empty
 
         iterator: Iterable[str] = (
             tqdm(tokens, desc="Embedding tokens", total=N) if self.use_tqdm else tokens
         )
 
         vecs: List[np.ndarray] = []
+        sources = []
+        last_source = None
         last_valid: Optional[np.ndarray] = None  # for copy_prev
 
         for i, tok in enumerate(iterator):
+            source = i
             v: Optional[np.ndarray] = None
 
             if not isinstance(tok, str):
@@ -139,6 +143,7 @@ class StaticEmbeddingFeatureExtractor(BaseFeatureExtractor):
                     # Skip may shrink length
                     continue
                 elif self.oov_handling == "copy_prev":
+                    source = i if last_source is None else last_source
                     v = (
                         last_valid.copy()
                         if last_valid is not None
@@ -152,6 +157,7 @@ class StaticEmbeddingFeatureExtractor(BaseFeatureExtractor):
                     v = self.kv.get_vector(tok).astype(np.float32, copy=False)
                     # only update last_valid when we have a real vector
                     last_valid = v.copy()
+                    last_source = i
                 else:
                     # OOV handling
                     if self.oov_handling == "error":
@@ -159,6 +165,7 @@ class StaticEmbeddingFeatureExtractor(BaseFeatureExtractor):
                     elif self.oov_handling == "skip":
                         continue  # WARNING: length may shrink
                     elif self.oov_handling == "copy_prev":
+                        source = i if last_source is None else last_source
                         v = (
                             last_valid.copy()
                             if last_valid is not None
@@ -174,11 +181,15 @@ class StaticEmbeddingFeatureExtractor(BaseFeatureExtractor):
                     v = v / n
 
             vecs.append(v)
+            if return_source_indices:
+                sources.append(source)
 
         if not vecs:
-            return np.zeros((0, self.dim), dtype=np.float32)
+            empty = np.zeros((0, self.dim), dtype=np.float32)
+            return (empty, np.empty(0, dtype=int)) if return_source_indices else empty
 
-        return np.stack([np.asarray(v, dtype=np.float32) for v in vecs], axis=0)
+        values = np.stack([np.asarray(v, dtype=np.float32) for v in vecs], axis=0)
+        return (values, np.asarray(sources, dtype=int)) if return_source_indices else values
 
     def _load_local_vectors(self, path: str) -> KeyedVectors:
         ext = path.lower()

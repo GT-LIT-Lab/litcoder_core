@@ -117,6 +117,95 @@ Tutorials from documentation:
 - [Embeddings](https://gt-lit-lab.github.io/litcoder_core/tutorial_embeddings.html)
 - [Speech](https://gt-lit-lab.github.io/litcoder_core/tutorial_speech.html)
 
+### Supplied scikit-learn regressors
+
+```python
+from sklearn.linear_model import Ridge
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+
+model = NestedCVModel(
+    "scaled_ridge",
+    estimator=make_pipeline(StandardScaler(), Ridge()),
+    param_grid={"ridge__alpha": [0.1, 1.0, 10.0]},
+)
+```
+
+Pass this model to `AbstractTrainer` or call `model.fit_predict` directly.
+Omit `param_grid` to fit with the supplied parameters. Grid selection maximizes
+mean finite Pearson correlation over inner validation folds and targets, using
+one parameter setting for all targets. Ties use the first grid candidate.
+Estimator fits, Pipeline transforms and optional LITCoder fold normalization
+use the corresponding training subset. Legacy fMRI per-story standardization
+is upstream of these fits. Pipeline caching must be disabled.
+Use an explicit random seed for stochastic estimators.
+
+The CPU path accepts cloneable regressors that fit NumPy float32 arrays and
+predict a finite numeric value per row and target. Native mode uses a 1-D
+target for one eligible column and requires advertised multi-output support
+for multiple eligible columns. Set `target_mode="per_target"` to fit a separate
+clone to each eligible column with the same selected parameters. Invalid targets
+retain their positions. Supply estimator parameters in their own units.
+For Ridge parity, use LITCoder's effective squared penalty as sklearn's
+`alpha` and match intercept, normalization, and singular-value settings.
+The built-in ridge path retains its existing convention.
+
+Supplied estimators return `None` for the two ridge array summaries. Fitted
+estimators and transforms are stored per fold and replayed with
+`NestedCVModel.predict_fold` on the prepared design. Nested CV has no final
+refit. Load pickle artifacts only from trusted sources with compatible
+scikit-learn and custom estimator versions. The ECoG memory preflight uses
+the existing design and ridge-workspace estimate. Estimator-specific memory
+usage can exceed that estimate.
+
+### Continuous ECoG
+
+Use `ECoGAssemblyGenerator(data_dir).generate_assembly(subject)` with a version 1
+`ecog.json` manifest, or pass preprocessed recording mappings as `recordings=`.
+Each recording supplies a uniform neural grid, sampling rate, signal and time
+units, ordered electrodes, transcript onsets, clocks or an explicit affine
+synchronization, and preprocessing provenance. Supply `valid_samples` for
+assessed-valid rows and optional disjoint `unknown_samples` for unannotated rows.
+Rows in neither mask are known-invalid. Keep original rows and clocks through
+gaps. Recordings pooled together must have the same electrode order and units.
+
+Pass the assembly to `AbstractTrainer` with `fir_delays=None`,
+`downsampler=None`, empty trimming and `ecog_temporal_config`. Supply one
+`feature_specs` entry per extractor. Methods are `word_sum`, `word_mean`,
+`word_last`, `words_per_bin`, `words_per_second`, and `speech_linear`.
+Empty bins are zero. Declare missing stimulus intervals in neural seconds.
+Speech needs mapped frame seconds, an origin and a maximum interpolation gap.
+Interpolation can use future frames. Dependency intervals cover the known
+context windows, carried-forward embeddings, and interpolation endpoints.
+Stateful context resets conservatively depend on the preceding recording prefix.
+Declare the full support of externally generated contexts, audio resampling
+and other upstream operations. For speech, use identified immutable audio
+because the cache keys by path. ECoG Lanczos, neural resampling and
+event-aligned analysis are outside this path.
+
+Set `delays_s` explicitly. Positive delays use earlier stimulus features.
+Rounding is to the nearest sample, with ties away from zero. Negative delays
+require `retrospective=True`. Use a configurable `memory_budget_bytes` for
+preflight. The estimate covers the expanded design and major ridge arrays,
+with feature extraction and exact process peak usage outside its guarantee.
+
+For held-out descriptive Pearson scores, choose `protocol="blocked"` or
+`"recording"` with an explicit embargo and justified neural preprocessing
+support. Purges use original time coordinates. Dependency exclusion does not
+establish independence. Inference is marked `not_assessed`. For an engineering
+fit/replay check, choose `protocol="diagnostic_in_sample"` and supply one
+positive built-in ridge alpha via `trainer.train(alphas=[...])`. This explicitly
+admits finite unknown-quality rows while excluding known-invalid rows and
+missing feature dependencies. Unknown neural preprocessing support is
+preserved as unknown. The single diagnostic fit emits no held-out metrics
+or significance outputs.
+
+Load trusted artifacts with `ModelSaver.load_encoding_result`. Replay an
+identified fit with `NestedCVModel.predict_fold` on the same prepared design
+in the recorded feature and sample order. Synthetic validation exercises
+the encoding path. Real-data loading/alignment and diagnostic replay do not
+establish independent predictive performance or exact paper replication.
+
 ## 3) Quick tutorial:
 
 This library uses the same core modules across datasets, here's an example for Narratives:
